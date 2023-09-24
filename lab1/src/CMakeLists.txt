@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.14)
 set(CMAKE_CXX_STANDARD 17)
 
 # TODO: переименовать проект
-project(nsuoop-cpp-template)
+project(lab1)
 
 # задаем имя исполняемого файла основной программы
 set(exe_name ${PROJECT_NAME})
