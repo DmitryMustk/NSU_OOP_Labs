@@ -1,1 +1,4 @@
 build.sh
+.clang-format
+.idea/
+src/cmake-build-debug
