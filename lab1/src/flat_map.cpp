@@ -95,21 +95,10 @@ void FlatMap::reserve(std::size_t new_capacity) {
     capacity_ = new_capacity;
 }
 
-std::size_t FlatMap::binarySearch(const std::string& key) const {
+std::size_t FlatMap::binarySearch(const std::string& key) {
     if (size_ == 0)
         return 0;
-
-    std::size_t left = 0;
-    std::size_t right = size_ - 1;
-
-    while (left <= right) {
-        std::size_t middle = left + (right - left) / 2;
-        if (data[middle].key == key)
-            return middle;
-        if (data[middle].key < key)
-            left = middle + 1;
-        else
-            right = middle - 1;
-    }
-    return left;
+    KeyValue* lower_bound =
+        std::lower_bound(data, data + size_, key, [](const KeyValue& kv, const std::string& k) { return kv.key < k; });
+    return lower_bound - data;
 }

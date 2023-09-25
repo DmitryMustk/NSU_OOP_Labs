@@ -1,6 +1,7 @@
 #ifndef FLAT_MAP_H
 #define FLAT_MAP_H
 
+#include <algorithm>
 #include <string>
 
 class FlatMap {
@@ -24,7 +25,7 @@ class FlatMap {
     std::size_t size_;
     std::size_t capacity_;
 
-    std::size_t binarySearch(const std::string& key) const;
+    std::size_t binarySearch(const std::string& key);
     void reserve(std::size_t new_capacity);
 };
 
