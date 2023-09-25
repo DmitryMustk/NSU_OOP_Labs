@@ -87,8 +87,9 @@ void FlatMap::reserve(std::size_t new_capacity) {
         return;
     }
     KeyValue* new_data = new KeyValue[new_capacity];
-    std::copy(data, data + size_, new_data);
-
+    for (std::size_t i = 0; i < size_; ++i) {
+        new_data[i] = data[i];
+    }
     delete[] data;
     data = new_data;
     capacity_ = new_capacity;
