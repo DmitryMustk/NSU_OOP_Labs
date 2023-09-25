@@ -5,4 +5,4 @@ To run:
   $build/lab1
 
 To run tests:
-  $build/test
+  $build/flat_map_test
