@@ -3,10 +3,8 @@
 FlatMap::FlatMap() : data(nullptr), size_(0), capacity_(0) {}
 
 FlatMap::FlatMap(const FlatMap& other_map) : size_(other_map.size_), capacity_(other_map.capacity_) {
-    data = new KeyValue[capacity_];
-    for (std::size_t i = 0; i < size_; ++i) {
-        data[i] = other_map.data[i];
-    }
+    data = new KeyValue[other_map.size_ + 1];
+    std::copy(other_map.data, other_map.data + other_map.size_, data);
 }
 
 FlatMap::~FlatMap() {
@@ -19,10 +17,8 @@ FlatMap& FlatMap::operator=(const FlatMap& other_map) {
     if (this == &other_map)
         return *this;
 
-    KeyValue* new_data = new KeyValue[other_map.capacity_];
-    for (std::size_t i = 0; i < other_map.size_; ++i) {
-        new_data[i] = other_map.data[i];
-    }
+    KeyValue* new_data = new KeyValue[other_map.size_];
+    std::copy(other_map.data, other_map.data + other_map.size_, new_data);
 
     delete[] data;
     capacity_ = other_map.capacity_;
@@ -87,9 +83,7 @@ void FlatMap::reserve(std::size_t new_capacity) {
         return;
     }
     KeyValue* new_data = new KeyValue[new_capacity];
-    for (std::size_t i = 0; i < size_; ++i) {
-        new_data[i] = data[i];
-    }
+    std::copy(data, data + size_, new_data);
     delete[] data;
     data = new_data;
     capacity_ = new_capacity;
