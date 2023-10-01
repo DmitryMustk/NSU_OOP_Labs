@@ -80,6 +80,20 @@ TEST(FlatMapTest, copy_and_assign) {
     EXPECT_TRUE(map_assigned.contains("Donetsk"));
 }
 
+TEST(FlatMapTest, MoveConstructor) {
+    FlatMap original_map;
+    original_map["key1"] = "value1";
+    original_map["key2"] = "value2";
+
+    FlatMap moved_map(std::move(original_map));
+
+    EXPECT_EQ(original_map.size(), 0);
+
+    EXPECT_EQ(moved_map.size(), 2);
+    EXPECT_EQ(moved_map["key1"], "value1");
+    EXPECT_EQ(moved_map["key2"], "value2");
+}
+
 }  // namespace
 
 int main(int argc, char **argv) {

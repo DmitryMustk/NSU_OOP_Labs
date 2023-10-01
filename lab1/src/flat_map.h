@@ -8,6 +8,7 @@ class FlatMap {
    public:
     FlatMap();
     FlatMap(const FlatMap& other_map);
+    FlatMap(FlatMap&& x) noexcept;
     ~FlatMap();
     FlatMap& operator=(const FlatMap& other_map);
     std::size_t size() const;

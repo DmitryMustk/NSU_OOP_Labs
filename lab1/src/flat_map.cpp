@@ -96,3 +96,9 @@ std::size_t FlatMap::binarySearch(const std::string& key) {
         std::lower_bound(data, data + size_, key, [](const KeyValue& kv, const std::string& k) { return kv.key < k; });
     return lower_bound - data;
 }
+
+FlatMap::FlatMap(FlatMap&& x) noexcept: data(x.data), size_(x.size_), capacity_(x.capacity_) {
+    x.data = nullptr;
+    x.size_ = 0;
+    x.capacity_ = 0;
+}
