@@ -102,3 +102,21 @@ FlatMap::FlatMap(FlatMap&& x) noexcept: data(x.data), size_(x.size_), capacity_(
     x.size_ = 0;
     x.capacity_ = 0;
 }
+
+FlatMap& FlatMap::operator=(FlatMap&& x) noexcept {
+    if(this == &x){
+        return *this;
+    }
+
+    delete[] data;
+
+    data = x.data;
+    size_ = x.size_;
+    capacity_ = x.capacity_;
+
+    x.data = nullptr;
+    x.size_ = 0;
+    x.capacity_ = 0;
+
+    return *this;
+}

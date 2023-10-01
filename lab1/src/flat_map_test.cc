@@ -80,7 +80,7 @@ TEST(FlatMapTest, copy_and_assign) {
     EXPECT_TRUE(map_assigned.contains("Donetsk"));
 }
 
-TEST(FlatMapTest, MoveConstructor) {
+TEST(FlatMapTest, move_constructor) {
     FlatMap original_map;
     original_map["key1"] = "value1";
     original_map["key2"] = "value2";
@@ -92,6 +92,26 @@ TEST(FlatMapTest, MoveConstructor) {
     EXPECT_EQ(moved_map.size(), 2);
     EXPECT_EQ(moved_map["key1"], "value1");
     EXPECT_EQ(moved_map["key2"], "value2");
+}
+
+TEST(FlatMapTest, move_assigment_operator) {
+    FlatMap map1;
+    map1["key1"] = "value1";
+    map1["key2"] = "value2";
+
+    FlatMap map2;
+    map2["key3"] = "value3";
+
+    map2 = std::move(map1);
+
+
+    EXPECT_EQ(map2.size(), 2);
+    EXPECT_EQ(map2["key1"], "value1");
+    EXPECT_EQ(map2["key2"], "value2");
+    EXPECT_FALSE(map2.contains("key3"));
+
+
+    EXPECT_EQ(map1.size(), 0);
 }
 
 }  // namespace

@@ -11,6 +11,7 @@ class FlatMap {
     FlatMap(FlatMap&& x) noexcept;
     ~FlatMap();
     FlatMap& operator=(const FlatMap& other_map);
+    FlatMap& operator=(FlatMap&& x) noexcept;
     std::size_t size() const;
     std::string& operator[](const std::string& key);
     bool contains(const std::string& key);
