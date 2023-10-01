@@ -89,11 +89,16 @@ void FlatMap::reserve(std::size_t new_capacity) {
     if (new_capacity <= capacity_) {
         return;
     }
-    KeyValue* new_data = new KeyValue[new_capacity];
-    std::copy(data, data + size_, new_data);
-    delete[] data;
-    data = new_data;
-    capacity_ = new_capacity;
+
+    FlatMap temp;
+    temp.data = new KeyValue[new_capacity];
+    temp.capacity_ = new_capacity;
+    temp.size_ = size_;
+    std::copy(data, data + size_, temp.data);
+
+    std::swap(data, temp.data);
+    std::swap(size_, temp.size_);
+    std::swap(capacity_, temp.capacity_);
 }
 
 std::size_t FlatMap::binarySearch(const std::string& key) {
