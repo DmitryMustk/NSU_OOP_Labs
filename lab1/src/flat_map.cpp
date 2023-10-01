@@ -23,13 +23,14 @@ FlatMap& FlatMap::operator=(const FlatMap& other_map) {
     if (this == &other_map)
         return *this;
 
-    KeyValue* new_data = new KeyValue[other_map.size_];
-    std::copy(other_map.data, other_map.data + other_map.size_, new_data);
+    FlatMap temp;
+    temp.reserve(other_map.capacity_);
+    temp.size_ = other_map.size_;
+    std::copy(other_map.data, other_map.data + other_map.size_, temp.data);
 
-    delete[] data;
-    capacity_ = other_map.capacity_;
-    size_ = other_map.size_;
-    data = new_data;
+    std::swap(data, temp.data);
+    std::swap(size_, temp.size_);
+    std::swap(capacity_, temp.capacity_);
 
     return *this;
 }
