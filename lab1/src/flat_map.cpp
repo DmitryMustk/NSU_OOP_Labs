@@ -2,9 +2,15 @@
 
 FlatMap::FlatMap() : data(nullptr), size_(0), capacity_(0) {}
 
-FlatMap::FlatMap(const FlatMap& other_map) : size_(other_map.size_), capacity_(other_map.capacity_) {
-    data = new KeyValue[other_map.size_ + 1];
-    std::copy(other_map.data, other_map.data + other_map.size_, data);
+FlatMap::FlatMap(const FlatMap& other_map) : data(nullptr), size_(0), capacity_(0) {
+    FlatMap temp;
+    temp.reserve(other_map.capacity_);
+    temp.size_ = other_map.size_;
+    std::copy(other_map.data, other_map.data + other_map.size_, temp.data);
+
+    std::swap(data, temp.data);
+    std::swap(size_, temp.size_);
+    std::swap(capacity_, temp.capacity_);
 }
 
 FlatMap::~FlatMap() {
