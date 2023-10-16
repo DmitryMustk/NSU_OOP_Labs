@@ -8,9 +8,7 @@ FlatMap::FlatMap(const FlatMap& other_map) : data_(nullptr), size_(0), capacity_
     temp.size_ = other_map.size_;
     std::copy(other_map.data_, other_map.data_ + other_map.size_, temp.data_);
 
-    std::swap(data_, temp.data_);
-    std::swap(size_, temp.size_);
-    std::swap(capacity_, temp.capacity_);
+    swap(*this, temp);
 }
 
 FlatMap::~FlatMap() {
@@ -28,10 +26,7 @@ FlatMap& FlatMap::operator=(const FlatMap& other_map) {
     temp.size_ = other_map.size_;
     std::copy(other_map.data_, other_map.data_ + other_map.size_, temp.data_);
 
-    std::swap(data_, temp.data_);
-    std::swap(size_, temp.size_);
-    std::swap(capacity_, temp.capacity_);
-
+    swap(*this, temp);
     return *this;
 }
 
@@ -96,9 +91,7 @@ void FlatMap::reserve(std::size_t new_capacity) {
     temp.size_ = size_;
     std::copy(data_, data_ + size_, temp.data_);
 
-    std::swap(data_, temp.data_);
-    std::swap(size_, temp.size_);
-    std::swap(capacity_, temp.capacity_);
+    swap(*this, temp);
 }
 
 std::size_t FlatMap::binary_search(const std::string& key) {
@@ -131,4 +124,9 @@ FlatMap& FlatMap::operator=(FlatMap&& x) noexcept {
     x.capacity_ = 0;
 
     return *this;
+}
+void swap(FlatMap& first, FlatMap& second) noexcept{
+    std::swap(first.data_, second.data_);
+    std::swap(first.size_, second.size_);
+    std::swap(first.capacity_, second.capacity_);
 }

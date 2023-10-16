@@ -7,6 +7,7 @@
 class FlatMap {
    public:
     FlatMap();
+    friend void swap(FlatMap& first, FlatMap& second) noexcept;
     FlatMap(const FlatMap& other_map);
     FlatMap(FlatMap&& x) noexcept;
     ~FlatMap();
@@ -27,8 +28,11 @@ class FlatMap {
     std::size_t size_;
     std::size_t capacity_;
 
+//    friend void swap(FlatMap& first, FlatMap& second) noexcept;
     std::size_t binary_search(const std::string& key);
     void reserve(std::size_t new_capacity);
+
 };
+
 
 #endif  // FLAT_MAP_H
