@@ -1,20 +1,20 @@
 #include "flat_map.h"
 
-FlatMap::FlatMap() : data(nullptr), size_(0), capacity_(0) {}
+FlatMap::FlatMap() : data_(nullptr), size_(0), capacity_(0) {}
 
-FlatMap::FlatMap(const FlatMap& other_map) : data(nullptr), size_(0), capacity_(0) {
+FlatMap::FlatMap(const FlatMap& other_map) : data_(nullptr), size_(0), capacity_(0) {
     FlatMap temp;
     temp.reserve(other_map.capacity_);
     temp.size_ = other_map.size_;
-    std::copy(other_map.data, other_map.data + other_map.size_, temp.data);
+    std::copy(other_map.data_, other_map.data_ + other_map.size_, temp.data_);
 
-    std::swap(data, temp.data);
+    std::swap(data_, temp.data_);
     std::swap(size_, temp.size_);
     std::swap(capacity_, temp.capacity_);
 }
 
 FlatMap::~FlatMap() {
-    delete[] data;
+    delete[] data_;
     size_ = 0;
     capacity_ = 0;
 }
@@ -26,9 +26,9 @@ FlatMap& FlatMap::operator=(const FlatMap& other_map) {
     FlatMap temp;
     temp.reserve(other_map.capacity_);
     temp.size_ = other_map.size_;
-    std::copy(other_map.data, other_map.data + other_map.size_, temp.data);
+    std::copy(other_map.data_, other_map.data_ + other_map.size_, temp.data_);
 
-    std::swap(data, temp.data);
+    std::swap(data_, temp.data_);
     std::swap(size_, temp.size_);
     std::swap(capacity_, temp.capacity_);
 
@@ -40,10 +40,10 @@ std::size_t FlatMap::size() const {
 }
 
 std::string& FlatMap::operator[](const std::string& key) {
-    std::size_t index = binarySearch(key);
+    std::size_t index = binary_search(key);
 
-    if (index < size_ && data[index].key == key) {
-        return data[index].value;
+    if (index < size_ && data_[index].key == key) {
+        return data_[index].value;
     }
 
     if (size_ == capacity_) {
@@ -51,26 +51,26 @@ std::string& FlatMap::operator[](const std::string& key) {
     }
 
     for (std::size_t i = size_; i > index; --i) {
-        data[i] = data[i - 1];
+        data_[i] = data_[i - 1];
     }
 
-    data[index].key = key;
-    data[index].value = "";
+    data_[index].key = key;
+    data_[index].value = "";
     ++size_;
-    return data[index].value;
+    return data_[index].value;
 }
 
 bool FlatMap::contains(const std::string& key) {
-    std::size_t index = FlatMap::binarySearch(key);
-    return (index < size_ && data[index].key == key);
+    std::size_t index = FlatMap::binary_search(key);
+    return (index < size_ && data_[index].key == key);
 }
 
 std::size_t FlatMap::erase(const std::string& key) {
-    std::size_t index = FlatMap::binarySearch(key);
+    std::size_t index = FlatMap::binary_search(key);
 
-    if (index < size_ && data[index].key == key) {
+    if (index < size_ && data_[index].key == key) {
         for (std::size_t i = index; i < size_ - 1; ++i) {
-            data[i] = data[i + 1];
+            data_[i] = data_[i + 1];
         }
         --size_;
         return 1;
@@ -79,8 +79,8 @@ std::size_t FlatMap::erase(const std::string& key) {
 }
 
 void FlatMap::clear() {
-    delete[] data;
-    data = nullptr;
+    delete[] data_;
+    data_ = nullptr;
     size_ = 0;
     capacity_ = 0;
 }
@@ -91,26 +91,26 @@ void FlatMap::reserve(std::size_t new_capacity) {
     }
 
     FlatMap temp;
-    temp.data = new KeyValue[new_capacity];
+    temp.data_ = new KeyValue[new_capacity];
     temp.capacity_ = new_capacity;
     temp.size_ = size_;
-    std::copy(data, data + size_, temp.data);
+    std::copy(data_, data_ + size_, temp.data_);
 
-    std::swap(data, temp.data);
+    std::swap(data_, temp.data_);
     std::swap(size_, temp.size_);
     std::swap(capacity_, temp.capacity_);
 }
 
-std::size_t FlatMap::binarySearch(const std::string& key) {
+std::size_t FlatMap::binary_search(const std::string& key) {
     if (size_ == 0)
         return 0;
     KeyValue* lower_bound =
-        std::lower_bound(data, data + size_, key, [](const KeyValue& kv, const std::string& k) { return kv.key < k; });
-    return lower_bound - data;
+        std::lower_bound(data_, data_ + size_, key, [](const KeyValue& kv, const std::string& k) { return kv.key < k; });
+    return lower_bound - data_;
 }
 
-FlatMap::FlatMap(FlatMap&& x) noexcept: data(x.data), size_(x.size_), capacity_(x.capacity_) {
-    x.data = nullptr;
+FlatMap::FlatMap(FlatMap&& x) noexcept: data_(x.data_), size_(x.size_), capacity_(x.capacity_) {
+    x.data_ = nullptr;
     x.size_ = 0;
     x.capacity_ = 0;
 }
@@ -120,13 +120,13 @@ FlatMap& FlatMap::operator=(FlatMap&& x) noexcept {
         return *this;
     }
 
-    delete[] data;
+    delete[] data_;
 
-    data = x.data;
+    data_ = x.data_;
     size_ = x.size_;
     capacity_ = x.capacity_;
 
-    x.data = nullptr;
+    x.data_ = nullptr;
     x.size_ = 0;
     x.capacity_ = 0;
 

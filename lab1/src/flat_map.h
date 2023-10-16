@@ -23,11 +23,11 @@ class FlatMap {
         std::string key;
         std::string value;
     };
-    KeyValue* data;
+    KeyValue* data_;
     std::size_t size_;
     std::size_t capacity_;
 
-    std::size_t binarySearch(const std::string& key);
+    std::size_t binary_search(const std::string& key);
     void reserve(std::size_t new_capacity);
 };
 
