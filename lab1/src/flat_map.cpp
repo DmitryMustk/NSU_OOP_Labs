@@ -21,11 +21,7 @@ FlatMap& FlatMap::operator=(const FlatMap& other_map) {
     if (this == &other_map)
         return *this;
 
-    FlatMap temp;
-    temp.reserve(other_map.capacity_);
-    temp.size_ = other_map.size_;
-    std::copy(other_map.data_, other_map.data_ + other_map.size_, temp.data_);
-
+    FlatMap temp(other_map);
     swap(*this, temp);
     return *this;
 }
@@ -125,6 +121,7 @@ FlatMap& FlatMap::operator=(FlatMap&& x) noexcept {
 
     return *this;
 }
+
 void swap(FlatMap& first, FlatMap& second) noexcept{
     std::swap(first.data_, second.data_);
     std::swap(first.size_, second.size_);
