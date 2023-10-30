@@ -1,0 +1,6 @@
+.clang-format
+.idea
+'Sound Processor Example Music'
+build.sh
+build
+
