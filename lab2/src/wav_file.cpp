@@ -13,6 +13,20 @@ void WAVSample::mute() {
     value = 0;
 }
 
+//WAVFile::WAVFile(const std::string& filename) {
+//    filename_ = filename;
+//    std::ifstream file(filename, std::ios::binary);
+//    if(!file.is_open())
+//        throw std::runtime_error("Failed to open file.");
+//    file.read(reinterpret_cast<char*>(&header), sizeof(WAVHeader));
+//    if(!)
+//}
+
+//WAVFile::~WAVFile(){
+//    if(file.is_open())
+//        file.close
+//}
+
 bool WAVFile::is_header_valid() {
     if (std::string(header.chunk_id, 4) != "RIFF" ||
         std::string(header.format, 4) != "WAVE" ||
@@ -45,11 +59,11 @@ bool WAVFile::load_file(const std::string& filename) {
     return true;
 }
 
-void WAVFile::mute(size_t start_sample, size_t end_sample) {
-    for(size_t i = start_sample; i < end_sample && i < samples.size(); ++i) {
-        samples[i].mute();
-    }
-}
+//void WAVFile::mute(size_t start_sample, size_t end_sample) {
+//    for(size_t i = start_sample; i < end_sample && i < samples.size(); ++i) {
+//        samples[i].mute();
+//    }
+//}
 
 bool WAVFile::save_file(const std::string& filename) {
     std::ofstream file(filename, std::ios::binary);
