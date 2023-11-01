@@ -10,16 +10,17 @@
 //TODO: create Instruction File Parser
 
 int main(void) {
-    const char* input1_file = "input1.wav";
+    const std::string input1_file = "input1.wav";
 //    const char* input2_file = "input2.wav";
 
-    const char* output1_file = "input1_muted.wav";
+    const std::string output1_file = "input1_muted.wav";
 //    const char* output2_file = "input2_muted.wav";
 //    const char* output_mix_file = "input_mix.wav";
 
-    WAVFile input1, output1;
+    WAVFile input1(input1_file);
+    WAVFile output1;
 //    WAVFile input2,  output2, output_mix;
-    input1.load_file(input1_file);
+//    input1.load_file(input1_file);
     output1 = input1;
     MuteConverter mc(441000, 30 * 44100);
     mc.convert(output1);

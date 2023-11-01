@@ -26,10 +26,8 @@ class WAVFile {
     std::string filename_;
     std::vector<WAVSample> samples;
 
-//    WAVFile(const std::string& filename);
-//    ~WAVFile();
-    bool load_file(const std::string& filename);
-    void mute(size_t start_sample, size_t end_sample);
+    WAVFile();
+    WAVFile(const std::string& filename);
     bool save_file(const std::string& filename);
     void mix(const WAVFile& other, size_t start_sample);
 
