@@ -4,7 +4,7 @@
 class MuteConverter: public Converter{
    public:
     MuteConverter(size_t start_sample, size_t end_sample);
-    void convert(WAVFile& wav) override;
+    void convert(std::vector<std::shared_ptr<WAVFile>>& files) override;
    private:
     size_t start_sample_;
     size_t end_sample_;
