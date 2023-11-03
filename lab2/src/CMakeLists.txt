@@ -25,10 +25,11 @@ endif()
 
 # описываем основную библиотеку, т.е. библиотеку, содержащую все cpp-файлы, кроме main.cpp
 # TODO: отредактировать список cpp-файлов
-add_library(corelib OBJECT wav_file.cpp mute_converter.cpp)
+add_library(corelib OBJECT wav_file.cpp mute_converter.cpp
+        mix_converter.cpp)
 
 # описываем исполняемый файл основной программы: это main.cpp + основная библиотека
-add_executable(${exe_name} main.cpp )
+add_executable(${exe_name} main.cpp)
 target_link_libraries(${exe_name} corelib)
 
 # ========== все, что ниже, относится к тестированию при помощи GoogleTest ==========

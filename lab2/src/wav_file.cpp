@@ -49,30 +49,6 @@ bool WAVFile::is_header_valid() {
     return true;
 }
 
-//bool WAVFile::load_file(const std::string& filename) {
-//    std::ifstream file(filename, std::ios::binary);
-//    if (!file.is_open()){
-//        std::cerr << "Failed to open file: " << filename << std::endl;
-//        return false;
-//    }
-//
-//    file.read(reinterpret_cast<char*>(&header), sizeof(WAVHeader));
-//    if(!is_header_valid())
-//        return false;
-//
-//    samples.resize(header.subchunk2_size / 2);
-//    file.read(reinterpret_cast<char*>(samples.data()), header.subchunk2_size);
-//
-//    file.close();
-//    return true;
-//}
-
-//void WAVFile::mute(size_t start_sample, size_t end_sample) {
-//    for(size_t i = start_sample; i < end_sample && i < samples.size(); ++i) {
-//        samples[i].mute();
-//    }
-//}
-
 bool WAVFile::save_file(const std::string& filename) {
     std::ofstream file(filename, std::ios::binary);
     if(!file.is_open()){

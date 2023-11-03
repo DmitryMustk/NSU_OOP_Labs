@@ -1,12 +1,9 @@
 #ifndef LAB2_MUTE_CONVERTER_H
 #define LAB2_MUTE_CONVERTER_H
 #include "converter.h"
-class MuteConverter: public Converter{
+class MuteConverter : public Converter {
    public:
-    MuteConverter(size_t start_sample, size_t end_sample);
-    void convert(std::vector<std::shared_ptr<WAVFile>>& files) override;
-   private:
-    size_t start_sample_;
-    size_t end_sample_;
+    void convert(std::vector<std::shared_ptr<WAVFile>>& files,
+                 std::vector<std::pair<size_t, size_t>> time_interval) override;
 };
 #endif  //LAB2_MUTE_CONVERTER_H

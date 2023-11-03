@@ -5,6 +5,6 @@
 
 class Converter{
    public:
-    virtual void convert(std::vector<std::shared_ptr<WAVFile>>& files) = 0;
+    virtual void convert(std::vector<std::shared_ptr<WAVFile>>& files, std::vector<std::pair<size_t , size_t>> time_intervals) = 0;
 };
 #endif  //LAB2_CONVERTER_H

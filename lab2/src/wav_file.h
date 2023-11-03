@@ -6,9 +6,6 @@
 #include <iostream>
 #include <vector>
 
-
-
-
 class WAVSample {
    public:
     int16_t value;
