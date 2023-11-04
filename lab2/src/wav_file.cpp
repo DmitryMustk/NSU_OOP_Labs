@@ -68,6 +68,17 @@ bool WAVFile::save_file(const std::string& filename) {
     file.close();
     return true;
 }
+uint32_t WAVFile::get_sample_rate() {
+    return header.sample_rate;
+}
+void WAVFile::set_sample_rate(const uint32_t sample_rate) {
+    if(sample_rate < 22050 || sample_rate > 96000)
+        throw std::runtime_error("Wrong sample_rate value, please use less speed_multiplier");
+    header.sample_rate = sample_rate;
+}
+uint16_t WAVFile::get_bits_per_sample() {
+    return header.bits_per_sample;
+}
 
 void WAVFile::mix(const WAVFile& other, size_t start_sample){
     for(size_t i = start_sample; i < samples.size() && i - start_sample < other.samples.size(); ++i){

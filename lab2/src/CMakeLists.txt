@@ -26,7 +26,8 @@ endif()
 # описываем основную библиотеку, т.е. библиотеку, содержащую все cpp-файлы, кроме main.cpp
 # TODO: отредактировать список cpp-файлов
 add_library(corelib OBJECT wav_file.cpp mute_converter.cpp
-        mix_converter.cpp)
+        mix_converter.cpp
+        nightcore_converter.cpp)
 
 # описываем исполняемый файл основной программы: это main.cpp + основная библиотека
 add_executable(${exe_name} main.cpp)

@@ -25,8 +25,12 @@ class WAVFile {
 
     WAVFile();
     WAVFile(const std::string& filename);
+    uint32_t get_sample_rate();
+    void set_sample_rate(const uint32_t sample_rate);
+    uint16_t get_bits_per_sample();
+
+
     bool save_file(const std::string& filename);
-    void mix(const WAVFile& other, size_t start_sample);
 
    private:
     struct WAVHeader {
@@ -46,7 +50,6 @@ class WAVFile {
     };
 
     WAVHeader header;
-    struct FileAttributes {};
     bool is_header_valid();
 };
 #endif  //LAB2_WAV_FILE_H

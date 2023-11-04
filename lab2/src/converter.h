@@ -1,10 +1,11 @@
 #ifndef LAB2_CONVERTER_H
 #define LAB2_CONVERTER_H
-#include "wav_file.h"
 #include <memory>
+#include "wav_file.h"
 
-class Converter{
+class Converter {
    public:
-    virtual void convert(std::vector<std::shared_ptr<WAVFile>>& files, std::vector<std::pair<size_t , size_t>> time_intervals) = 0;
+    virtual void convert(std::vector<std::shared_ptr<WAVFile>>& files,
+                         std::vector<std::pair<size_t, size_t>> time_intervals) = 0;
 };
 #endif  //LAB2_CONVERTER_H
