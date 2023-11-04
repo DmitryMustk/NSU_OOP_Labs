@@ -79,9 +79,9 @@ void WAVFile::set_sample_rate(const uint32_t sample_rate) {
 uint16_t WAVFile::get_bits_per_sample() {
     return header.bits_per_sample;
 }
-
-void WAVFile::mix(const WAVFile& other, size_t start_sample){
-    for(size_t i = start_sample; i < samples.size() && i - start_sample < other.samples.size(); ++i){
-        samples[i] += other.samples[i - start_sample];
-    }
+void WAVFile::set_byte_rate(const uint32_t byte_rate) {
+    const uint32_t base_byte_rate = header.num_channels * header.bits_per_sample / 8;
+    if(byte_rate < 22050 * base_byte_rate || byte_rate > 92000 * base_byte_rate)
+        throw std::runtime_error("Wrong byte_rate value, please use less speed_multiplier");
+    header.byte_rate = byte_rate;
 }

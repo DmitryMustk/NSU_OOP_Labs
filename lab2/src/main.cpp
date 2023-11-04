@@ -4,7 +4,7 @@
 #include "mute_converter.h"
 #include "mix_converter.h"
 
-//TODO: Create a Converter classes
+
 //TODO: Create a Nightcore_mix Converter
 //TODO: add an -h
 //TODO: create CLI Parser

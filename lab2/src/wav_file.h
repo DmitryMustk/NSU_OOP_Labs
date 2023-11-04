@@ -28,6 +28,7 @@ class WAVFile {
     uint32_t get_sample_rate();
     void set_sample_rate(const uint32_t sample_rate);
     uint16_t get_bits_per_sample();
+    void set_byte_rate(const uint32_t byte_rate);
 
 
     bool save_file(const std::string& filename);
