@@ -85,3 +85,12 @@ void WAVFile::set_byte_rate(const uint32_t byte_rate) {
         throw std::runtime_error("Wrong byte_rate value, please use less speed_multiplier");
     header.byte_rate = byte_rate;
 }
+uint32_t WAVFile::get_subchunk2_size() {
+    return header.subchunk2_size;
+}
+void WAVFile::set_subchunk2_size(const uint32_t subchunk2_size) {
+    header.subchunk2_size = subchunk2_size;
+}
+void WAVFile::set_chunk_size(const uint32_t chunk_size) {
+    header.chunk_size = chunk_size;
+}

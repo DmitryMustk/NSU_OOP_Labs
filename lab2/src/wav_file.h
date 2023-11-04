@@ -26,10 +26,14 @@ class WAVFile {
     WAVFile();
     WAVFile(const std::string& filename);
     uint32_t get_sample_rate();
-    void set_sample_rate(const uint32_t sample_rate);
     uint16_t get_bits_per_sample();
-    void set_byte_rate(const uint32_t byte_rate);
+    uint32_t get_subchunk2_size();
 
+
+    void set_sample_rate(const uint32_t sample_rate);
+    void set_byte_rate(const uint32_t byte_rate);
+    void set_subchunk2_size(const uint32_t subchunk2_size);
+    void set_chunk_size(const uint32_t chunk_size);
 
     bool save_file(const std::string& filename);
 

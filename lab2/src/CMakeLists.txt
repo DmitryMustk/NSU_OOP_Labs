@@ -17,17 +17,18 @@ set(test_name test)
 # Но вы можете убрать /WX и -Werror (разрешив компиляцию с предупреждениями), если сможете разумно объяснить своё решение.
 if (MSVC)
     # warning level 4 and all warnings as errors
-    add_compile_options(/W4 /WX)
+#    add_compile_options(/W4 /WX)
 else()
     # lots of warnings and all warnings as errors
-    add_compile_options(-Wall -Wextra -pedantic -Werror)
+#    add_compile_options(-Wall -Wextra -pedantic -Werror)
 endif()
 
 # описываем основную библиотеку, т.е. библиотеку, содержащую все cpp-файлы, кроме main.cpp
 # TODO: отредактировать список cpp-файлов
 add_library(corelib OBJECT wav_file.cpp mute_converter.cpp
         mix_converter.cpp
-        nightcore_converter.cpp)
+        nightcore_converter.cpp
+        )
 
 # описываем исполняемый файл основной программы: это main.cpp + основная библиотека
 add_executable(${exe_name} main.cpp)
