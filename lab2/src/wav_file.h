@@ -29,7 +29,6 @@ class WAVFile {
     uint16_t get_bits_per_sample();
     uint32_t get_subchunk2_size();
 
-
     void set_sample_rate(const uint32_t sample_rate);
     void set_byte_rate(const uint32_t byte_rate);
     void set_subchunk2_size(const uint32_t subchunk2_size);

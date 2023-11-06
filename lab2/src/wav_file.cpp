@@ -1,8 +1,8 @@
 #include "wav_file.h"
 
-WAVSample::WAVSample(): value(0) {}
+WAVSample::WAVSample() : value(0) {}
 
-WAVSample::WAVSample(int16_t val): value(val) {}
+WAVSample::WAVSample(int16_t val) : value(val) {}
 
 WAVSample& WAVSample::operator+=(const WAVSample& other) {
     value = (value + other.value) / 2;
@@ -22,10 +22,10 @@ WAVFile::WAVFile() {
 WAVFile::WAVFile(const std::string& filename) {
     filename_ = filename;
     std::ifstream file(filename, std::ios::binary);
-    if(!file.is_open())
+    if (!file.is_open())
         throw std::runtime_error("Failed to open file.");
     file.read(reinterpret_cast<char*>(&header), sizeof(WAVHeader));
-    if(!is_header_valid()) {
+    if (!is_header_valid()) {
         file.close();
         throw std::runtime_error("Wrong file format.");
     }
@@ -36,11 +36,8 @@ WAVFile::WAVFile(const std::string& filename) {
 }
 
 bool WAVFile::is_header_valid() {
-    if (std::string(header.chunk_id, 4) != "RIFF" ||
-        std::string(header.format, 4) != "WAVE" ||
-        header.audio_format != 1 ||
-        header.num_channels != 1 ||
-        header.sample_rate != 44100 ||
+    if (std::string(header.chunk_id, 4) != "RIFF" || std::string(header.format, 4) != "WAVE" ||
+        header.audio_format != 1 || header.num_channels != 1 || header.sample_rate != 44100 ||
         header.bits_per_sample != 16) {
 
         std::cerr << "Unsupported WAV format." << std::endl;
@@ -51,7 +48,7 @@ bool WAVFile::is_header_valid() {
 
 bool WAVFile::save_file(const std::string& filename) {
     std::ofstream file(filename, std::ios::binary);
-    if(!file.is_open()){
+    if (!file.is_open()) {
         std::cerr << "Failed to open file for writing " << filename << std::endl;
         return false;
     }
@@ -61,7 +58,7 @@ bool WAVFile::save_file(const std::string& filename) {
 
     file.write(reinterpret_cast<char*>(&header), sizeof(WAVHeader));
 
-    for(const auto& sample: samples) {
+    for (const auto& sample : samples) {
         file.write(reinterpret_cast<const char*>(&sample.value), sizeof(int16_t));
     }
 
@@ -72,7 +69,7 @@ uint32_t WAVFile::get_sample_rate() {
     return header.sample_rate;
 }
 void WAVFile::set_sample_rate(const uint32_t sample_rate) {
-    if(sample_rate < 22050 || sample_rate > 96000)
+    if (sample_rate < 22050 || sample_rate > 96000)
         throw std::runtime_error("Wrong sample_rate value, please use less speed_multiplier");
     header.sample_rate = sample_rate;
 }
@@ -81,7 +78,7 @@ uint16_t WAVFile::get_bits_per_sample() {
 }
 void WAVFile::set_byte_rate(const uint32_t byte_rate) {
     const uint32_t base_byte_rate = header.num_channels * header.bits_per_sample / 8;
-    if(byte_rate < 22050 * base_byte_rate || byte_rate > 92000 * base_byte_rate)
+    if (byte_rate < 22050 * base_byte_rate || byte_rate > 92000 * base_byte_rate)
         throw std::runtime_error("Wrong byte_rate value, please use less speed_multiplier");
     header.byte_rate = byte_rate;
 }

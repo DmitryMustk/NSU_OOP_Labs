@@ -3,13 +3,12 @@
 #include "nightcore_converter.h"
 
 void NightcoreConverter::convert(std::vector<std::shared_ptr<WAVFile>>& files,
-                                 std::vector<std::pair<size_t, size_t>> time_intervals) {
-    convert(files, time_intervals, 1.25, 4);
+                                 std::pair<size_t, size_t> time_interval) {
+    convert(files, time_interval, 1.25, 4);
 }
 
-void NightcoreConverter::convert(std::vector<std::shared_ptr<WAVFile>>& files,
-                                 std::vector<std::pair<size_t, size_t>> time_intervals, const float speed_multiplier,
-                                 const int pitch_multiplier) {
+void NightcoreConverter::convert(std::vector<std::shared_ptr<WAVFile>>& files, std::pair<size_t, size_t> time_intervals,
+                                 const float speed_multiplier, const int pitch_multiplier) {
     speed_up(files, speed_multiplier);
     pitch(files, pitch_multiplier);
 }
@@ -23,8 +22,8 @@ void NightcoreConverter::speed_up(std::vector<std::shared_ptr<WAVFile>>& files, 
             size_t old_index = static_cast<size_t>(i * speed_mult);
             new_samples.push_back(files[j]->samples[old_index]);
         }
-        files[j]->samples = new_samples;
 
+        files[j]->samples = new_samples;
         files[j]->set_subchunk2_size(new_sample_count * sizeof(int16_t));
         files[j]->set_chunk_size(files[j]->get_subchunk2_size() + 36);
         files[j]->set_byte_rate(files[j]->get_sample_rate() * files[j]->get_bits_per_sample() / 8);
@@ -48,10 +47,10 @@ void NightcoreConverter::pitch(std::vector<std::shared_ptr<WAVFile>>& files, con
                 new_samples.push_back(WAVSample(interpol_sample));
             }
         }
+
         files[j]->samples = new_samples;
         files[j]->set_subchunk2_size(new_samples.size() * sizeof(int16_t));
         files[j]->set_chunk_size(files[j]->get_subchunk2_size() + 36);
         files[j]->set_byte_rate(files[j]->get_sample_rate() * files[j]->get_bits_per_sample() / 8);
-
     }
 }

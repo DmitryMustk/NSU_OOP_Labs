@@ -1,15 +1,9 @@
 #include "mute_converter.h"
 
-void MuteConverter::convert(std::vector<std::shared_ptr<WAVFile>>& files,
-                            std::vector<std::pair<size_t, size_t>> time_intervals) {
-    if (files.size() != time_intervals.size())
-        throw std::runtime_error("Wrong size of args in mute_converter");
+void MuteConverter::convert(std::vector<std::shared_ptr<WAVFile>>& files, std::pair<size_t, size_t> time_interval) {
 
-    size_t files_size = files.size();
-    for (size_t i = 0; i < files_size; ++i) {
-        size_t samples_size = files[i]->samples.size();
-        for (size_t j = time_intervals[i].first; j < time_intervals[i].second && j < samples_size; ++j) {
-            files[i]->samples[j].mute();
-        }
+    size_t samples_size = files[0]->samples.size();
+    for (size_t j = time_interval.first; j < time_interval.second && j < samples_size; ++j) {
+        files[0]->samples[j].mute();
     }
 }

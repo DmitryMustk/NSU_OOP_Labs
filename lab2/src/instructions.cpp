@@ -12,6 +12,9 @@ Instructions::Instructions(const std::string& filename) {
     while (std::getline(input, line)) {
         std::stringstream str_stream(line);
 
+        if(line == "")
+            continue;
+
         std::string converter;
         str_stream >> converter;
 

@@ -12,8 +12,6 @@ class Instructions {
     std::vector<Instruction> data;
 
     Instructions(const std::string& filename);
-
-   private:
 };
 
 #endif  //SOUNDPROCESSOR_INSTRUCTIONS_H

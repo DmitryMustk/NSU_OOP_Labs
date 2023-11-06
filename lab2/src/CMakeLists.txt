@@ -28,7 +28,11 @@ endif()
 add_library(corelib OBJECT wav_file.cpp mute_converter.cpp
         mix_converter.cpp
         nightcore_converter.cpp
-        )
+        factory.cpp
+        instructions.cpp
+        cli_parser.cpp
+        cli_parser.h
+)
 
 # описываем исполняемый файл основной программы: это main.cpp + основная библиотека
 add_executable(${exe_name} main.cpp)
