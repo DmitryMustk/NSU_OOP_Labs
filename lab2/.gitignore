@@ -3,6 +3,5 @@
 !*.hpp
 
 src/cmake-build-debug/*
-src/*
 build/*
 example_songs/*
