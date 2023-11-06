@@ -1,0 +1,41 @@
+|------------------------------------------------------------------------------|
+|                            SoundProcessor - Help                             |
+|------------------------------------------------------------------------------|
+|                                                                              |
+|-Usage:                                                                       |
+|   ./SoundProcessor [INPUT_FILES...] [OUTPUT_FILE.wav] [INSTRUCTION_FILE.txt] |
+|                                                                              |
+|-Description:                                                                 |
+|    A command-line utility for converting WAV audio files.                    |
+|    This program takes a set of input files (input1.wav,input2.wav, etc.) and |
+|    a text configuration file with the following format:                      |
+|                                                                              |
+|                                                                              |
+|    # Mute the first 30 seconds of input1                                     |
+|    mute 0 30                                                                 |
+|    # Mix with input2, starting from second 10                                |
+|    mix $2 10                                                                 |
+|    # Mute the 3rd minute in the mixed stream                                 |
+|    mute 120 180                                                              |
+|    # Apply a nightcore filter with speed 1.25 and pitch to 4 semitones       |
+|    nightcore 1.25 4                                                          |
+|                                                                              |
+|    The program generates a new WAV file with audio based on the provided     |
+|    configuration.                                                            |
+|                                                                              |
+|-Supported Transformations (Converters):                                      |
+|    - mute: Mute an interval                                                  |
+|    - mix: Mix two files (the output will be the average of the inputs)       |
+|    - nightcore: Apply a nightcore filter                                     |
+|                                                                              |
+|-Input File Format:                                                           |
+|    - Audio Format: PCM (no encoding)                                         |
+|    - Mono sound (1 channel)                                                  |
+|    - Bit Depth: 16-bit signed (little-endian)                                |
+|    - Sample Rate: 44100 Hz                                                   |
+|                                                                              |
+|-Options:                                                                     |
+|    -h, --help      Display this help message.                                |
+|                                                                              |
+|                                                                              |
+--------------------------------------------------------------------------------
