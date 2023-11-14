@@ -1,8 +1,8 @@
 #ifndef GAME_UTILS_H
 #define GAME_UTILS_H
-#include <string>
-#include "bullet.h"
 #include <ncurses.h>
+#include <string>
+#include "bomb.h"
 
 void out(int y, int x, const std::string& s);
 

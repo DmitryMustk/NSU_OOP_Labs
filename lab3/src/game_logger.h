@@ -10,10 +10,10 @@ class GameLogger{
     GameLogger(const std::string& log_file_name);
     ~GameLogger();
     void log(const std::string& message);
-    void log(std::string& message, int w, int h);
+    void log(const std::string& message, int w, int h);
    private:
     std::ofstream log_file;
-    std::string log_file_name
+    std::string log_file_name;
 };
 
 #endif  //BOMBERMAN_GAME_LOGGER_H

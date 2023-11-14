@@ -18,11 +18,13 @@ if(WIN32 OR MSVC)
 endif()
 
 add_executable(${exe_name} main.cpp
-        bullet.cpp
+        bomb.cpp
         player.cpp
         bomberman_game.cpp
         utils.cpp
         utils.h
+        game_logger.cpp
+        game_logger.h
 )
 
 if(WIN32 OR MSVC)

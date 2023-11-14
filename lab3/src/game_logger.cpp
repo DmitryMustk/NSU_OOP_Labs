@@ -1,7 +1,5 @@
 #include "game_logger.h"
 
-#include <utility>
-
 GameLogger::GameLogger(const std::string&  log_file_name) : log_file_name(log_file_name) {
     log_file.open(log_file_name, std::ios::app);
 }
@@ -15,7 +13,7 @@ void GameLogger::log(const std::string& message) {
 GameLogger::~GameLogger() {
     log_file.close();
 }
-void GameLogger::log(std::string& message, int w, int h) {
+void GameLogger::log(const std::string& message, int w, int h) {
     std::string new_message = message + "on w=" + std::to_string(w) + ", h=" + std::to_string(h);
     log(new_message);
 }

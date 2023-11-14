@@ -5,7 +5,7 @@
 #include "bomberman_game.h"
 #include "utils.h"
 
-BombermanGame::BombermanGame() {
+BombermanGame::BombermanGame() : game_logger("logs.txt") {
     initscr();
     cbreak();
     noecho();
@@ -13,7 +13,7 @@ BombermanGame::BombermanGame() {
     keypad(stdscr, TRUE);
     timeout(50);
 
-    if(has_colors() == FALSE){
+    if (has_colors() == FALSE) {
         endwin();
         throw std::runtime_error("Your terminal does not support colours.\n");
     }
@@ -29,34 +29,36 @@ BombermanGame::BombermanGame() {
     player.move_to(w1 / 2, h1 / 2);
 }
 
-BombermanGame::~BombermanGame(){
+BombermanGame::~BombermanGame() {
     endwin();
 }
 
 void BombermanGame::render_title() {
-    ssize_t title_size = snprintf(NULL, 0, title_format_str, bullets.size());
+    ssize_t title_size = snprintf(NULL, 0, title_format_str, bombs.size());
     wmove(stdscr, 1, (w1 - title_size) / 2);
-    wprintw(stdscr, title_format_str, bullets.size());
+    wprintw(stdscr, title_format_str, bombs.size());
 }
 
-//TODO: Создать класс бомбы, флаг взорвалась ли, поле с хранением сек до взрыва выводить вместо бомбы секи.
 void BombermanGame::render_bullets() {
     attron(COLOR_PAIR(bullet_color_pair));
-    for(Bullet& b: bullets){
-        if((now() - b.last_time) / 1s > 300) {
-            b.h--;
-            b.last_time = now();
+    for (Bomb& b : bombs) {
+        if (b.get_secs_to_blow() > 0) {
+            out(b.h, b.w, std::to_string(b.get_secs_to_blow()));
+            continue;
         }
-        out(b.h, b.w, "B");
-
+        b.draw_boom();
+        game_logger.log("Boom", b.w, b.h);
+        bombs.erase(
+            std::remove_if(bombs.begin(), bombs.end(), [](const Bomb& b) { return !(4 - (now() - b.last_time) / 1s); }),
+            bombs.end());
     }
     attroff(COLOR_PAIR(bullet_color_pair));
 
     //remove bullets reached the screen border
-    bullets.erase(std::remove_if(bullets.begin(), bullets.end(), [](const Bullet& b) {return b.h < 2; }), bullets.end());
+    //    bombs.erase(std::remove_if(bombs.begin(), bombs.end(), [](const Bomb& b) {return !(4 - (now() - b.last_time) / 1s); }), bombs.end());
 }
 
-void BombermanGame::render_border() const{
+void BombermanGame::render_border() const {
     for (int i = 1; i < w1; ++i) {
         out(0, i, "-");
         out(h1 - 1, i, "-");
@@ -74,20 +76,23 @@ void BombermanGame::render_border() const{
 void BombermanGame::handle_input(int c) {
     switch (c) {
         case KEY_LEFT:
-            if(player.w)
+            if (player.w > 1)
                 player.move_left();
             break;
         case KEY_RIGHT:
-            player.move_right();
+            if (player.w < w1 - 2)
+                player.move_right();
             break;
         case KEY_UP:
-            player.move_up();
+            if (player.h > 1)
+                player.move_up();
             break;
         case KEY_DOWN:
-            player.move_down();
+            if (player.h < h1 - 2)
+                player.move_down();
             break;
         case ' ':
-            bullets.push_back(Bullet{player.w, player.h, now()});
+            bombs.push_back(Bomb{player.w, player.h, now()});
             break;
         default:
             break;
