@@ -5,6 +5,7 @@ class Player {
    public:
     int w;
     int h;
+    bool is_dead;
 
     Player();
     Player(int initial_W, int initial_H);
