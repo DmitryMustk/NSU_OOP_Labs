@@ -26,10 +26,10 @@ add_executable(${exe_name} main.cpp
         game_logger.cpp
         game_logger.h
 )
-
+find_package(SFML 2.5 COMPONENTS system audio REQUIRED)
 if(WIN32 OR MSVC)
     target_link_libraries(${exe_name} PDcurses)
 else()
-    target_link_libraries(${exe_name} curses)
+    target_link_libraries(${exe_name} curses sfml-system sfml-audio)
 endif()
 

@@ -47,6 +47,8 @@ void BombermanGame::render_bullets() {
             continue;
         }
         b.draw_boom();
+        if(b.w == player.w && b.h == player.h)
+            game_logger.log("Player blown up ", b.w, b.h);
         game_logger.log("Boom", b.w, b.h);
         bombs.erase(
             std::remove_if(bombs.begin(), bombs.end(), [](const Bomb& b) { return !(4 - (now() - b.last_time) / 1s); }),
@@ -99,11 +101,26 @@ void BombermanGame::handle_input(int c) {
     }
 }
 
+
+void BombermanGame::playMusic(sf::Music& music) {
+    if (!music.openFromFile("nc_output.wav")) {
+        game_logger.log("Cannot open music file");
+        return;
+    }
+    music.play();
+}
+
+
 void BombermanGame::run_game() {
     int c;
+    sf::Music music;
+    playMusic(music);
     while ('q' != (c = getch())) {
         // clear the screen
         clear();
+        if (music.getStatus() != sf::Music::Playing) {
+            music.play();
+        }
 
         render_title();
         render_bullets();

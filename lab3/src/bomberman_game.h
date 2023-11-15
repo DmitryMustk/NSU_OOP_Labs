@@ -1,6 +1,8 @@
 #ifndef GAME_BOMBERMAN_GAME_H
 #define GAME_BOMBERMAN_GAME_H
 #include <vector>
+#include <unistd.h>
+#include <SFML/Audio.hpp>
 
 #include "bomb.h"
 #include "game_logger.h"
@@ -15,11 +17,12 @@ class BombermanGame {
 
     std::vector<Bomb> bombs;
 
-
     const char* title_format_str = "Bomberman Game. Bombs: %lu";
     const int16_t main_color_pair = 1;
     const int16_t player_color_pair = 2;
     const int16_t bullet_color_pair = 3;
+
+    void playMusic(sf::Music& music);
 
    public:
     BombermanGame();
