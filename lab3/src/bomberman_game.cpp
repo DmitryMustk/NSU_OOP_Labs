@@ -47,8 +47,9 @@ void BombermanGame::render_bullets() {
             continue;
         }
         b.draw_boom();
-        if(b.w == player.w && b.h == player.h)
-            game_logger.log("Player blown up ", b.w, b.h);
+        if(is_player_blown(b)){
+            game_logger.log("Player has been blown ", player.w, player.h);
+        }
         game_logger.log("Boom", b.w, b.h);
         bombs.erase(
             std::remove_if(bombs.begin(), bombs.end(), [](const Bomb& b) { return !(4 - (now() - b.last_time) / 1s); }),
@@ -101,15 +102,13 @@ void BombermanGame::handle_input(int c) {
     }
 }
 
-
 void BombermanGame::playMusic(sf::Music& music) {
-    if (!music.openFromFile("nc_output.wav")) {
+    if (!music.openFromFile("../resources/nc_output.wav")) {
         game_logger.log("Cannot open music file");
         return;
     }
     music.play();
 }
-
 
 void BombermanGame::run_game() {
     int c;
@@ -131,4 +130,13 @@ void BombermanGame::run_game() {
         // don't forget to call refresh/wrefresh to make your changes visible
         refresh();
     }
+}
+bool BombermanGame::is_player_blown(Bomb& b) {
+    std::vector<std::pair<int, int>> damage_cords = b.get_damage_cords();
+    std::pair<int, int> player_cords = std::make_pair(player.h, player.w);
+    for (auto& cords : damage_cords) {
+        if (cords == player_cords)
+            return true;
+    }
+    return false;
 }

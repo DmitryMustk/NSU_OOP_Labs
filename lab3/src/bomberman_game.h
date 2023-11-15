@@ -23,6 +23,7 @@ class BombermanGame {
     const int16_t bullet_color_pair = 3;
 
     void playMusic(sf::Music& music);
+    bool is_player_blown(Bomb& b);
 
    public:
     BombermanGame();
