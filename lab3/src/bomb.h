@@ -10,6 +10,7 @@ class Bomb {
    public:
     int w;
     int h;
+    bool is_blown;
     steady_clock_t last_time;
 
     Bomb(int w, int h, steady_clock_t last_time);
@@ -17,6 +18,7 @@ class Bomb {
     void set_countdown(int new_cd);
     [[nodiscard]] int get_secs_to_blow() const;
     std::vector<std::pair<int, int>> get_damage_cords();
+    void draw_bomb();
     void draw_boom() const;
 
    private:

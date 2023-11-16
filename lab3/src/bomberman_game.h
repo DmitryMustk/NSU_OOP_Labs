@@ -22,9 +22,12 @@ class BombermanGame {
     const int16_t player_color_pair = 2;
     const int16_t bullet_color_pair = 3;
     const int16_t lose_screen_color_pair = 4;
+    const int16_t start_screen_color_pair = 5;
 
-    void playMusic(sf::Music& music);
+    void play_music(sf::Music& music);
     bool is_player_blown(Bomb& b);
+    void start_screen();
+    void show_message(std::vector<std::string>& message, int from, int to) const;
     void lose();
 
    public:

@@ -1,6 +1,7 @@
 #include <ncurses.h>
 #include <algorithm>
 #include <stdexcept>
+#include <unistd.h>
 
 #include "bomberman_game.h"
 #include "utils.h"
@@ -43,17 +44,11 @@ void BombermanGame::render_title() {
 void BombermanGame::render_bombs() {
     attron(COLOR_PAIR(bullet_color_pair));
     for (Bomb& b : bombs) {
-        //TODO: bombs отрисовку(secs to blow + boom) to separate bomb method
-        if (b.get_secs_to_blow() > 0) {
-            out(b.h, b.w, std::to_string(b.get_secs_to_blow()));
+        b.draw_bomb();
+        if(!b.is_blown)
             continue;
-        }
-        b.draw_boom();
-        if (is_player_blown(b)) {
-            game_logger.log("Player has been blown ", player.w, player.h);
+        if (is_player_blown(b))
             lose();
-        }
-        game_logger.log("Boom", b.w, b.h);
         bombs.erase(
             std::remove_if(bombs.begin(), bombs.end(), [](const Bomb& b) { return !(4 - (now() - b.last_time) / 1s); }),
             bombs.end());
@@ -95,14 +90,14 @@ void BombermanGame::handle_input(int c) {
                 player.move_down();
             break;
         case ' ':
-            bombs.push_back(Bomb{player.w, player.h, now()});
+            bombs.emplace_back(player.w, player.h, now());
             break;
         default:
             break;
     }
 }
 
-void BombermanGame::playMusic(sf::Music& music) {
+void BombermanGame::play_music(sf::Music& music) {
     if (!music.openFromFile("../resources/nc_output.wav")) {
         game_logger.log("Cannot open music file");
         return;
@@ -112,10 +107,10 @@ void BombermanGame::playMusic(sf::Music& music) {
 
 void BombermanGame::run_game() {
     int c;
+    start_screen();
     sf::Music music;
-    playMusic(music);
+    play_music(music);
     while ('q' != (c = getch())) {
-        // clear the screen
         if (player.is_dead) {
             lose();
             continue;
@@ -132,7 +127,6 @@ void BombermanGame::run_game() {
         player.display();
         handle_input(c);
 
-        // don't forget to call refresh/wrefresh to make your changes visible
         refresh();
     }
 }
@@ -152,4 +146,29 @@ void BombermanGame::lose() {
     out(h1 / 2, (w1 - messages.first.size()) / 2, messages.first);
     out(h1 / 2 + 1, (w1 - messages.second.size()) / 2, messages.second);
     refresh();
+}
+
+void BombermanGame::start_screen() {
+    std::ifstream input("../resources/start_screen.txt");
+    if (!input.is_open())
+        throw std::runtime_error("Can not open the start_screen file");
+    std::vector<std::string> message;
+    std::string line;
+    while (std::getline(input, line))
+        message.push_back(line);
+
+    show_message(message, 0, 8);
+    show_message(message, 10, 18);
+    show_message(message, 19, 26);
+}
+
+void BombermanGame::show_message(std::vector<std::string>& message, int from, int to) const{
+    for (int j = 0; j < to - from; ++j) {
+        clear();
+        for (int i = from; i < to - j; ++i) {
+            out(h1 / 2 + (i - from) - (to - from) / 2, (w1 - message[i].size()) / 2, message[i]);
+        }
+        refresh();
+        usleep(50000);
+    }
 }
