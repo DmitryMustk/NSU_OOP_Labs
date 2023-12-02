@@ -23,8 +23,8 @@ BombermanGame::BombermanGame(){
     //get console dimensions
     getmaxyx(stdscr, h1, w1);
 
-    // std::unique_ptr<Player> player_object = std::make_unique<Player>();
-    // game_objects.push_back(std::move(player_object));
+    std::unique_ptr<Player> player_object = std::make_unique<Player>(w1, h1);
+    game_objects.push_back(std::move(player_object));
 }
 
 BombermanGame::~BombermanGame(){
@@ -57,10 +57,26 @@ void BombermanGame::run_game() {
     
     while ('q' != (c = getch())) {
         clear();
+
+        update_objects(c);
+
         render_title();
         render_border();
-        // handle_input(c);
+        render_objects();
 
         refresh();
     }
 }
+
+void BombermanGame::render_objects() {
+    for(auto& obj : game_objects){
+        obj->draw();
+    }
+}
+
+void BombermanGame::update_objects(int key_pressed) {
+    for(auto& obj : game_objects){
+        obj->update(key_pressed);
+    }
+}
+

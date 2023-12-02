@@ -6,10 +6,9 @@
 
 class Bomb : public GameObject {
 public:
-    void update() override;
-    void draw() const override;
+    void update(int key_pressed) override;
+    void draw() override;
 
-    // Другие методы и свойства для бомбы
 };
 
 #endif // BOMB_H

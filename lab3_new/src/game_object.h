@@ -5,8 +5,12 @@ class GameObject {
 public:
     virtual ~GameObject() = default;
 
-    virtual void update() = 0;
-    virtual void draw() const = 0;
+    virtual void update(int key_pressed) = 0;
+    virtual void draw() = 0;
+protected:
+    int w;
+    int h;
+    bool is_dead;
 };
 
 #endif // GAME_OBJECT_H

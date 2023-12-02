@@ -16,7 +16,7 @@ public:
 
 private:
     void handle_input(int input);
-    void update_objects();
+    void update_objects(int key_pressed);
     void render_objects() ;
     void render_title();
     void render_border() ;
