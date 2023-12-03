@@ -9,9 +9,9 @@ set(exe_name ${PROJECT_NAME})
 add_executable(${exe_name} main.cpp
     bomberman_game.cpp
     utils.cpp
-    player.cpp
-    bomb.cpp
     game_logger.cpp
+    game_objects/player.cpp
+    game_objects/bomb.cpp
 )
 find_package(SFML 2.5 COMPONENTS system audio REQUIRED)
 

@@ -1,13 +1,12 @@
 #ifndef BOMBERMAN_GAME_H
 #define BOMBERMAN_GAME_H
+#include "game_objects/bomb.h"
+#include "game_objects/game_object.h"
+#include "game_objects/player.h"
 
-#include <vector>
-#include <SFML/Audio/Music.hpp>
-#include "game_object.h"
-#include "player.h"
-#include "bomb.h"
 #include <memory>
 #include <unordered_set>
+#include <vector>
 
 class BombermanGame {
 public:

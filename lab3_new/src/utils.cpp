@@ -1,5 +1,6 @@
 #include "utils.h"
 
+
 void out(int y, int x, const std::string& s) {
     wmove(stdscr, y, x);
     wprintw(stdscr, "%s", s.c_str());

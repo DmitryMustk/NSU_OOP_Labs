@@ -1,8 +1,8 @@
 #ifndef GAME_UTILS_H
 #define GAME_UTILS_H
+#include <chrono>
 #include <ncurses.h>
 #include <string>
-#include <chrono>
 
 using namespace std::chrono_literals;
 using steady_clock_t = std::chrono::time_point<std::chrono::steady_clock>;

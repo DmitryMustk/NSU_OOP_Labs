@@ -1,12 +1,11 @@
 #include "bomberman_game.h"
+#include "game_logger.h"
 #include "utils.h"
 
-#include <ncurses.h>
 #include <algorithm>
+#include <ncurses.h>
 #include <stdexcept>
 #include <unistd.h>
-
-#include "game_logger.h"
 
 BombermanGame::BombermanGame(){
     initscr();
@@ -27,8 +26,6 @@ BombermanGame::BombermanGame(){
     
     player_object = std::make_shared<Player>(h1, w1);
     game_objects.push_back(player_object);
-
-
 }
 
 BombermanGame::~BombermanGame(){
@@ -36,9 +33,9 @@ BombermanGame::~BombermanGame(){
 }
 
 void BombermanGame::render_title() {
-    ssize_t title_size = snprintf(NULL, 0, title_format_str, 5);
+    ssize_t title_size = snprintf(NULL, 0, title_format_str, game_objects.size() - 1);
     wmove(stdscr, 1, (w1 - title_size) / 2);
-    wprintw(stdscr, title_format_str, "Залупка");
+    wprintw(stdscr, title_format_str, game_objects.size() - 1);
 }
 
 void BombermanGame::render_border() {
@@ -56,11 +53,24 @@ void BombermanGame::render_border() {
     out(h1 - 1, w1 - 1, "+");
 }
 
+void BombermanGame::lose(){
+    std::pair<std::string, std::string> messages = std::make_pair("Game Over - You Lose!", "Press 'q' to quit");
+    int16_t lose_screen_color_pair = 4;
+    wbkgd(stdscr, COLOR_PAIR(lose_screen_color_pair));
+    out(h1 / 2, (w1 - messages.first.size()) / 2, messages.first);
+    out(h1 / 2 + 1, (w1 - messages.second.size()) / 2, messages.second);
+}
+
 void BombermanGame::run_game() {
     int c;
     
     while ('q' != (c = getch())) {
         clear();
+
+        if(game_objects.empty()){
+            lose();
+            continue;
+        }
 
         manage_objects(c);
         update_objects(c);
