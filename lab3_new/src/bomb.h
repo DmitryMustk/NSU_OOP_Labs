@@ -13,11 +13,12 @@ public:
     void draw() override;
     virtual void check_death(std::vector<std::pair<int, int>>& kill_cells) override;
 
+    void update_damage_cords();
 private: 
     steady_clock_t born_time;
-    int countdown;
+    float countdown;
     int boom_radius;
-    int secs_to_blow;
+    float time_to_blow;
 
     void draw_boom();
 };

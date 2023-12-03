@@ -10,26 +10,35 @@ Bomb::Bomb(int h1, int w1, steady_clock_t b_time){
     boom_radius = 2;
     countdown = 3;
     icon = "B";
+}
+
+void Bomb::check_death(std::vector<std::pair<int, int>>& kill_cells){
+    if(time_to_blow <= -500)
+        is_dead = true;
+}
+
+void Bomb::update_damage_cords(){
+    if((time_to_blow) > 0)
+        return;
     for (int i = w - boom_radius / 2; i <= w - boom_radius / 2 + boom_radius; ++i)
         damage_cords.emplace_back(h, i);
     for (int i = h - boom_radius / 2; i <= h - boom_radius / 2 + boom_radius; ++i)
         damage_cords.emplace_back(i, w);
-}
-
-void Bomb::check_death(std::vector<std::pair<int, int>>& kill_cells){
-    if(secs_to_blow <= 0)
-        is_dead = true;
+        
 }
 
 void Bomb::update(int key_pressed, std::vector<std::pair<int, int>>& kill_cells) {
-    secs_to_blow = countdown - (now() - born_time) / 1s;
+    time_to_blow = countdown * 1000 - (now() - born_time) / 1ms ;
     check_death(kill_cells);
-    icon = std::to_string(secs_to_blow);
+    update_damage_cords();
+    icon = std::to_string(static_cast<int>(time_to_blow / 1000));
 }
 
 void Bomb::draw(){
-    if(is_dead)
+    if(time_to_blow < 0){
         draw_boom();
+        return;
+    }
     out(h, w, icon);
 }
 
