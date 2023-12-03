@@ -4,6 +4,7 @@
 enum property{
     OBSTACLE,
     KILL,
+    PLAYER,
 };
 
 struct special_cell{

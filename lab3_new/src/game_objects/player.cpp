@@ -26,10 +26,10 @@ void Player::check_death(std::vector<special_cell>& general_special_cells) {
 
 bool Player::can_move(int h, int w, std::vector<special_cell>& general_special_cells){
     GameLogger logger("logs.txt");
-    logger.log("Player hochet idti na  ", h, w);
+    // logger.log("Player hochet idti na  ", h, w);
     const auto go_cords = std::make_pair(h, w);
     for(const auto& cell : general_special_cells){
-        logger.log("Stena: ", h, w);
+        // logger.log("Stena: ", cell.cords.first, cell.cords.second);
         if(cell.cords == go_cords && cell.prop == OBSTACLE){
             return false;
         }
@@ -67,7 +67,7 @@ void Player::update(int key_pressed, std::vector<special_cell>& general_special_
 }
 
 void Player::update_special_cells() {
-    special_cells.emplace_back(h, w, OBSTACLE);
+    special_cells.emplace_back(h, w, PLAYER);
 }
 
 void Player::draw() {
