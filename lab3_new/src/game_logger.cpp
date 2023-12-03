@@ -1,0 +1,29 @@
+#include "game_logger.h"
+
+GameLogger::GameLogger(const std::string&  log_file_name) : log_file_name(log_file_name) {
+    log_file.open(log_file_name, std::ios::app);  
+}
+
+void GameLogger::log(const std::string& message) {
+    std::time_t current_time = std::time(nullptr);
+    std::tm* local_time = std::localtime(&current_time);
+
+    log_file << "[" << std::put_time(local_time, "%Y-%m-%d %H:%M:%S") << "]" << message << std::endl;
+}
+
+GameLogger::~GameLogger() {
+    log_file.close();
+}
+
+void GameLogger::log(const std::string& message, int w, int h) {
+    std::string new_message = message + "on w=" + std::to_string(w) + ", h=" + std::to_string(h);
+    log(new_message);
+}
+
+void GameLogger::log(const std::string& message, std::vector<std::pair<int,int>> dmg_cords, std::pair<int, int> player_cords){
+    std::string new_message = message + "player is " + std::to_string(player_cords.first) + " " + std::to_string(player_cords.second) + "Bomb in \n";
+    for(const auto& cell: dmg_cords){
+        new_message += std::to_string(cell.first) + " " + std::to_string(cell.second) + "\n";
+    } 
+    log(new_message);
+}

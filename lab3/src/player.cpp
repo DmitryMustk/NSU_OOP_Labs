@@ -6,6 +6,7 @@
 Player::Player() {
     w = 0;
     h = 0;
+    is_dead = false;
 }
 
 void Player::move_down() {

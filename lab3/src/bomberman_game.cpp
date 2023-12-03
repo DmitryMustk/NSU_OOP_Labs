@@ -1,6 +1,7 @@
 #include <ncurses.h>
 #include <algorithm>
 #include <stdexcept>
+#include <unistd.h>
 
 #include "bomberman_game.h"
 #include "utils.h"
@@ -23,6 +24,7 @@ BombermanGame::BombermanGame() : game_logger("logs.txt") {
     init_pair(main_color_pair, COLOR_WHITE, COLOR_BLACK);
     init_pair(player_color_pair, COLOR_YELLOW, COLOR_BLUE);
     init_pair(bullet_color_pair, COLOR_RED, COLOR_BLACK);
+    init_pair(lose_screen_color_pair, COLOR_BLACK, COLOR_RED);
 
     //get console dimensions
     getmaxyx(stdscr, h1, w1);
@@ -39,26 +41,19 @@ void BombermanGame::render_title() {
     wprintw(stdscr, title_format_str, bombs.size());
 }
 
-void BombermanGame::render_bullets() {
+void BombermanGame::render_bombs() {
     attron(COLOR_PAIR(bullet_color_pair));
     for (Bomb& b : bombs) {
-        if (b.get_secs_to_blow() > 0) {
-            out(b.h, b.w, std::to_string(b.get_secs_to_blow()));
+        b.draw_bomb();
+        if(!b.is_blown)
             continue;
-        }
-        b.draw_boom();
-        if(is_player_blown(b)){
-            game_logger.log("Player has been blown ", player.w, player.h);
-        }
-        game_logger.log("Boom", b.w, b.h);
+        if (is_player_blown(b))
+            lose();
         bombs.erase(
             std::remove_if(bombs.begin(), bombs.end(), [](const Bomb& b) { return !(4 - (now() - b.last_time) / 1s); }),
             bombs.end());
     }
     attroff(COLOR_PAIR(bullet_color_pair));
-
-    //remove bullets reached the screen border
-    //    bombs.erase(std::remove_if(bombs.begin(), bombs.end(), [](const Bomb& b) {return !(4 - (now() - b.last_time) / 1s); }), bombs.end());
 }
 
 void BombermanGame::render_border() const {
@@ -95,14 +90,14 @@ void BombermanGame::handle_input(int c) {
                 player.move_down();
             break;
         case ' ':
-            bombs.push_back(Bomb{player.w, player.h, now()});
+            bombs.emplace_back(player.w, player.h, now());
             break;
         default:
             break;
     }
 }
 
-void BombermanGame::playMusic(sf::Music& music) {
+void BombermanGame::play_music(sf::Music& music) {
     if (!music.openFromFile("../resources/nc_output.wav")) {
         game_logger.log("Cannot open music file");
         return;
@@ -112,31 +107,68 @@ void BombermanGame::playMusic(sf::Music& music) {
 
 void BombermanGame::run_game() {
     int c;
+    start_screen();
     sf::Music music;
-    playMusic(music);
+    play_music(music);
     while ('q' != (c = getch())) {
-        // clear the screen
+        if (player.is_dead) {
+            lose();
+            continue;
+        }
         clear();
         if (music.getStatus() != sf::Music::Playing) {
             music.play();
         }
 
         render_title();
-        render_bullets();
+
+        render_bombs();
         render_border();
         player.display();
         handle_input(c);
 
-        // don't forget to call refresh/wrefresh to make your changes visible
         refresh();
     }
 }
 bool BombermanGame::is_player_blown(Bomb& b) {
     std::vector<std::pair<int, int>> damage_cords = b.get_damage_cords();
     std::pair<int, int> player_cords = std::make_pair(player.h, player.w);
-    for (auto& cords : damage_cords) {
-        if (cords == player_cords)
-            return true;
+
+    return std::any_of(damage_cords.begin(), damage_cords.end(),
+                       [&player_cords](const auto& cords) { return cords == player_cords; });
+}
+
+void BombermanGame::lose() {
+    player.is_dead = true;
+
+    std::pair<std::string, std::string> messages = std::make_pair("Game Over - You Lose!", "Press 'q' to quit");
+    wbkgd(stdscr, COLOR_PAIR(lose_screen_color_pair));
+    out(h1 / 2, (w1 - messages.first.size()) / 2, messages.first);
+    out(h1 / 2 + 1, (w1 - messages.second.size()) / 2, messages.second);
+    refresh();
+}
+
+void BombermanGame::start_screen() {
+    std::ifstream input("../resources/start_screen.txt");
+    if (!input.is_open())
+        throw std::runtime_error("Can not open the start_screen file");
+    std::vector<std::string> message;
+    std::string line;
+    while (std::getline(input, line))
+        message.push_back(line);
+
+    show_message(message, 0, 8);
+    show_message(message, 10, 18);
+    show_message(message, 19, 26);
+}
+
+void BombermanGame::show_message(std::vector<std::string>& message, int from, int to) const{
+    for (int j = 0; j < to - from; ++j) {
+        clear();
+        for (int i = from; i < to - j; ++i) {
+            out(h1 / 2 + (i - from) - (to - from) / 2, (w1 - message[i].size()) / 2, message[i]);
+        }
+        refresh();
+        usleep(50000);
     }
-    return false;
 }
