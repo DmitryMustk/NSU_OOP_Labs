@@ -1,5 +1,9 @@
 #include "bomberman_game.h"
 
+
+//TODO: add consts
+//TODO: add refs gde nado
+//TODO: add hash set for death cords
 int main(void){
     BombermanGame game;
     game.run_game();

@@ -2,9 +2,9 @@
 #include <string>
 
 
-Bomb::Bomb(int w1, int h1, steady_clock_t b_time){
-    w = w1;
+Bomb::Bomb(int h1, int w1, steady_clock_t b_time){
     h = h1;
+    w = w1;
     born_time = b_time;
     is_dead = false;
     boom_radius = 2;
@@ -16,13 +16,15 @@ Bomb::Bomb(int w1, int h1, steady_clock_t b_time){
         damage_cords.emplace_back(i, w);
 }
 
-void Bomb::update(int key_pressed) {
-    int secs_to_blow = countdown - (now() - born_time) / 1s;
-    if(secs_to_blow > 0){
-        icon = std::to_string(secs_to_blow);
-        return;
-    }
-    is_dead = true;
+void Bomb::check_death(std::vector<std::pair<int, int>>& kill_cells){
+    if(secs_to_blow <= 0)
+        is_dead = true;
+}
+
+void Bomb::update(int key_pressed, std::vector<std::pair<int, int>>& kill_cells) {
+    secs_to_blow = countdown - (now() - born_time) / 1s;
+    check_death(kill_cells);
+    icon = std::to_string(secs_to_blow);
 }
 
 void Bomb::draw(){

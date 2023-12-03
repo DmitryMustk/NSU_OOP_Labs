@@ -11,6 +11,7 @@ add_executable(${exe_name} main.cpp
     utils.cpp
     player.cpp
     bomb.cpp
+    game_logger.cpp
 )
 find_package(SFML 2.5 COMPONENTS system audio REQUIRED)
 

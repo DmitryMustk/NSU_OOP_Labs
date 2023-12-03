@@ -7,6 +7,7 @@
 #include "player.h"
 #include "bomb.h"
 #include <memory>
+#include <unordered_set>
 
 class BombermanGame {
 public:
@@ -17,6 +18,7 @@ public:
 private:
     void manage_objects(int key_pressed);
     void delete_dead_objects();
+    void update_kill_cells();
     void update_objects(int key_pressed);
     void render_objects() ;
     void render_title();
@@ -36,6 +38,7 @@ private:
     const int16_t start_screen_color_pair = 5;
 
     std::vector<std::shared_ptr<GameObject>> game_objects;
+    std::vector<std::pair<int, int>> kill_cells;
 };
 
 #endif // BOMBERMAN_GAME_H

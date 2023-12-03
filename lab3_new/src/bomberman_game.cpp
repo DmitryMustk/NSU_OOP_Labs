@@ -6,6 +6,8 @@
 #include <stdexcept>
 #include <unistd.h>
 
+#include "game_logger.h"
+
 BombermanGame::BombermanGame(){
     initscr();
     cbreak();
@@ -22,9 +24,10 @@ BombermanGame::BombermanGame(){
 
     //get console dimensions
     getmaxyx(stdscr, h1, w1);
-
-    player_object = std::make_shared<Player>(w1, h1);
+    
+    player_object = std::make_shared<Player>(h1, w1);
     game_objects.push_back(player_object);
+
 
 }
 
@@ -64,6 +67,7 @@ void BombermanGame::run_game() {
         render_title();
         render_border();
         render_objects();
+        update_kill_cells();
 
         refresh();
     }
@@ -77,7 +81,7 @@ void BombermanGame::render_objects() {
 
 void BombermanGame::update_objects(int key_pressed) {
     for(auto& obj : game_objects){
-        obj->update(key_pressed);
+        obj->update(key_pressed, kill_cells);
     }
 }
 
@@ -86,12 +90,21 @@ void BombermanGame::manage_objects(int key_pressed) {
     
     // Bomb Creation
     if (key_pressed == ' ') {
-
         auto player_cords = player_object->get_cords();
         auto bomb_object = std::make_unique<Bomb>(player_cords.first, player_cords.second, now());
         game_objects.push_back(std::move(bomb_object));
+
     }
 
+}
+
+void BombermanGame::update_kill_cells(){
+    kill_cells.clear(); //Возможно ебанет
+    for(const auto& obj : game_objects){
+        for(const auto& cell : obj->damage_cords){
+            kill_cells.push_back(cell);
+        }
+    }
 }
 
 void BombermanGame::delete_dead_objects(){
