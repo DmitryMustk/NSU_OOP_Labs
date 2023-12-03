@@ -15,7 +15,8 @@ public:
     void run_game();
 
 private:
-    void handle_input(int input);
+    void manage_objects(int key_pressed);
+    void delete_dead_objects();
     void update_objects(int key_pressed);
     void render_objects() ;
     void render_title();
@@ -25,6 +26,8 @@ private:
 
     int h1;
     int w1;
+    std::shared_ptr<Player> player_object;
+
     const char* title_format_str = "Bomberman Game. Bombs: %lu";
     const int16_t main_color_pair = 1;
     const int16_t player_color_pair = 2;
@@ -32,7 +35,7 @@ private:
     const int16_t lose_screen_color_pair = 4;
     const int16_t start_screen_color_pair = 5;
 
-    std::vector<std::unique_ptr<GameObject>> game_objects;
+    std::vector<std::shared_ptr<GameObject>> game_objects;
 };
 
 #endif // BOMBERMAN_GAME_H

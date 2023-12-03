@@ -8,6 +8,7 @@ Player::Player(int screen_w, int screen_h) {
     h = screen_h / 2;
     screen_width = screen_w;
     screen_height = screen_h;
+    icon = "P";
     is_dead = false;
 }
 
@@ -36,6 +37,10 @@ void Player::update(int key_pressed) {
 
 void Player::draw() {
     attron(COLOR_PAIR(2));
-    out(h, w, "P");
+    out(h, w, icon);
     attroff(COLOR_PAIR(2));
+}
+
+std::pair<int, int> Player::get_cords(){
+    return std::make_pair(w, h);
 }

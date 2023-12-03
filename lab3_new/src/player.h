@@ -8,17 +8,12 @@ class Player : public GameObject {
     Player(int w, int h);
     void update(int key_pressed) override;
     void draw() override;
+    std::pair<int, int> get_cords();
 
   private:
-    int w;
-    int h;
     int screen_width;
     int screen_height;
 
-    void move_left();
-    void move_right();
-    void move_up();
-    void move_down();
 };
 
 #endif // PLAYER_H

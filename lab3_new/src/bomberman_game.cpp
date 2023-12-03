@@ -23,8 +23,9 @@ BombermanGame::BombermanGame(){
     //get console dimensions
     getmaxyx(stdscr, h1, w1);
 
-    std::unique_ptr<Player> player_object = std::make_unique<Player>(w1, h1);
-    game_objects.push_back(std::move(player_object));
+    player_object = std::make_shared<Player>(w1, h1);
+    game_objects.push_back(player_object);
+
 }
 
 BombermanGame::~BombermanGame(){
@@ -58,8 +59,8 @@ void BombermanGame::run_game() {
     while ('q' != (c = getch())) {
         clear();
 
+        manage_objects(c);
         update_objects(c);
-
         render_title();
         render_border();
         render_objects();
@@ -80,3 +81,26 @@ void BombermanGame::update_objects(int key_pressed) {
     }
 }
 
+void BombermanGame::manage_objects(int key_pressed) {
+    delete_dead_objects();
+    
+    // Bomb Creation
+    if (key_pressed == ' ') {
+
+        auto player_cords = player_object->get_cords();
+        auto bomb_object = std::make_unique<Bomb>(player_cords.first, player_cords.second, now());
+        game_objects.push_back(std::move(bomb_object));
+    }
+
+}
+
+void BombermanGame::delete_dead_objects(){
+    game_objects.erase(
+        std::remove_if(
+            game_objects.begin(), 
+            game_objects.end(), 
+            [](const auto& obj) { return obj->is_dead; }
+        ), 
+        game_objects.end()
+    );
+}
