@@ -14,28 +14,45 @@ Player::Player(int screen_h, int screen_w) {
     is_dead = false;
 }
 
-void Player::check_death(std::vector<std::pair<int, int>>& kill_cells) {
-    auto it = std::find(kill_cells.begin(), kill_cells.end(), get_cords());
-    if(it != kill_cells.end())
-        is_dead = true;
+void Player::check_death(std::vector<special_cell>& general_special_cells) {
+    const auto player_cords = get_cords();
+    for(const auto& cell : general_special_cells){
+        if(cell.cords == player_cords && cell.prop == KILL){
+            is_dead = true;
+            break;
+        }
+    }
 }
 
-void Player::move_player(int key_pressed){
+bool Player::can_move(int h, int w, std::vector<special_cell>& general_special_cells){
+    GameLogger logger("logs.txt");
+    logger.log("Player hochet idti na  ", h, w);
+    const auto go_cords = std::make_pair(h, w);
+    for(const auto& cell : general_special_cells){
+        logger.log("Stena: ", h, w);
+        if(cell.cords == go_cords && cell.prop == OBSTACLE){
+            return false;
+        }
+    }
+    return true;
+}
+
+void Player::move_player(int key_pressed, std::vector<special_cell>& general_special_cells){
     switch (key_pressed) {
         case KEY_LEFT:
-            if(w > 1)
+            if(w > 1 && can_move(h, w - 1, general_special_cells))
                 --w;
             break;
         case KEY_RIGHT:
-            if(w < screen_width - 2)
+            if(w < screen_width - 2 && can_move(h, w + 1, general_special_cells))
                 ++w;
             break;
         case KEY_UP:
-            if (h > 1)
+            if (h > 1 && can_move(h - 1, w, general_special_cells))
                 --h;
             break;
         case KEY_DOWN:
-            if (h < screen_height - 2)    
+            if (h < screen_height - 2 && can_move(h + 1, w, general_special_cells))    
                 ++h;
             break;
         default:
@@ -43,9 +60,14 @@ void Player::move_player(int key_pressed){
     }
 }
 
-void Player::update(int key_pressed, std::vector<std::pair<int, int>>& kill_cells) {
-    check_death(kill_cells);
-    move_player(key_pressed);    
+void Player::update(int key_pressed, std::vector<special_cell>& general_special_cells) {
+    check_death(general_special_cells);
+    move_player(key_pressed, general_special_cells);    
+    update_special_cells();
+}
+
+void Player::update_special_cells() {
+    special_cells.emplace_back(h, w, OBSTACLE);
 }
 
 void Player::draw() {

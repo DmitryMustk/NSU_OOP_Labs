@@ -8,11 +8,11 @@
 class Bomb : public GameObject {
 public:
     Bomb(int w1, int h1, steady_clock_t b_time);
-    void update(int key_pressed, std::vector<std::pair<int, int>>& kill_cells) override;
+    void update(int key_pressed, std::vector<special_cell>& general_special_cells) override;
     void draw() override;
-    virtual void check_death(std::vector<std::pair<int, int>>& kill_cells) override;
+    void check_death(std::vector<special_cell>& general_special_cells) override;
+    void update_special_cells() override;
 
-    void update_damage_cords();
 private: 
     steady_clock_t born_time;
     float countdown;

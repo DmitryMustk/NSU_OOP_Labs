@@ -26,6 +26,8 @@ BombermanGame::BombermanGame(){
     
     player_object = std::make_shared<Player>(h1, w1);
     game_objects.push_back(player_object);
+
+    create_walls();
 }
 
 BombermanGame::~BombermanGame(){
@@ -67,7 +69,7 @@ void BombermanGame::run_game() {
     while ('q' != (c = getch())) {
         clear();
 
-        if(game_objects.empty()){
+        if(player_object->is_dead){
             lose();
             continue;
         }
@@ -77,7 +79,7 @@ void BombermanGame::run_game() {
         render_title();
         render_border();
         render_objects();
-        update_kill_cells();
+        update_special_cells();
 
         refresh();
     }
@@ -91,7 +93,7 @@ void BombermanGame::render_objects() {
 
 void BombermanGame::update_objects(int key_pressed) {
     for(auto& obj : game_objects){
-        obj->update(key_pressed, kill_cells);
+        obj->update(key_pressed, general_special_cells);
     }
 }
 
@@ -101,18 +103,23 @@ void BombermanGame::manage_objects(int key_pressed) {
     // Bomb Creation
     if (key_pressed == ' ') {
         auto player_cords = player_object->get_cords();
-        auto bomb_object = std::make_unique<Bomb>(player_cords.first, player_cords.second, now());
+        auto bomb_object = std::make_shared<Bomb>(player_cords.first, player_cords.second, now());
         game_objects.push_back(std::move(bomb_object));
-
     }
-
 }
 
-void BombermanGame::update_kill_cells(){
-    kill_cells.clear(); //Возможно ебанет
+void BombermanGame::create_walls(){
+    for(int i = 10; i < 20; ++i){
+        auto wall_object = std::make_shared<Wall>(30, i);
+        game_objects.push_back(std::move(wall_object));
+    }
+}
+
+void BombermanGame::update_special_cells(){
+    general_special_cells.clear();
     for(const auto& obj : game_objects){
-        for(const auto& cell : obj->damage_cords){
-            kill_cells.push_back(cell);
+        for(const auto& cell : obj->special_cells){
+            general_special_cells.push_back(cell);
         }
     }
 }
