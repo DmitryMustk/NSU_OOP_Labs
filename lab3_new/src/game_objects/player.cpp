@@ -6,7 +6,7 @@
 #include <ncurses.h>
 
 Player::Player(int screen_h, int screen_w) {
-    w = screen_w/ 2;
+    w = screen_w / 2;
     h = screen_h / 2;
     screen_width = screen_w;
     screen_height = screen_h;
@@ -14,10 +14,14 @@ Player::Player(int screen_h, int screen_w) {
     is_dead = false;
 }
 
+std::string Player::get_obj_name() {
+    return std::string("Player");
+}
+
 void Player::check_death(std::vector<special_cell>& general_special_cells) {
     const auto player_cords = get_cords();
     for(const auto& cell : general_special_cells){
-        if(cell.cords == player_cords && cell.prop == KILL){
+        if(cell.cords == player_cords && (cell.is_kill || cell.is_enemy) ){
             is_dead = true;
             break;
         }
@@ -25,12 +29,9 @@ void Player::check_death(std::vector<special_cell>& general_special_cells) {
 }
 
 bool Player::can_move(int h, int w, std::vector<special_cell>& general_special_cells){
-    GameLogger logger("logs.txt");
-    // logger.log("Player hochet idti na  ", h, w);
     const auto go_cords = std::make_pair(h, w);
     for(const auto& cell : general_special_cells){
-        // logger.log("Stena: ", cell.cords.first, cell.cords.second);
-        if(cell.cords == go_cords && cell.prop == OBSTACLE){
+        if(cell.cords == go_cords && cell.is_obstacle){
             return false;
         }
     }
@@ -63,11 +64,6 @@ void Player::move_player(int key_pressed, std::vector<special_cell>& general_spe
 void Player::update(int key_pressed, std::vector<special_cell>& general_special_cells) {
     check_death(general_special_cells);
     move_player(key_pressed, general_special_cells);    
-    update_special_cells();
-}
-
-void Player::update_special_cells() {
-    special_cells.emplace_back(h, w, PLAYER);
 }
 
 void Player::draw() {

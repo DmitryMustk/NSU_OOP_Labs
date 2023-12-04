@@ -10,7 +10,7 @@ public:
     virtual ~GameObject() = default;
 
     virtual void update(int key_pressed, std::vector<special_cell>& general_special_cells) = 0;
-    virtual void update_special_cells() = 0;
+    virtual std::string get_obj_name() = 0;
     virtual void draw() = 0;
     virtual void check_death(std::vector<special_cell>& general_special_cells) = 0;
     bool is_dead;

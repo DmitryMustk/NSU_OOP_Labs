@@ -1,6 +1,9 @@
 #include "special_cell.h"
 
-special_cell::special_cell(int h, int w, property pr){
+special_cell::special_cell(int h, int w){
     cords = std::make_pair(h, w);
-    prop = pr;
+    is_kill = false;
+    is_enemy = false;
+    is_obstacle = false;
 }
+
