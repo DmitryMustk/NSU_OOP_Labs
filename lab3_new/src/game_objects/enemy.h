@@ -1,18 +1,20 @@
-#ifndef WALL_H
-#define WALL_H
+#ifndef ENEMY_H
+#define ENEMY_H
+#include "player.h"
+#include "../utils.h"
 #include "game_object.h"
 
-class Wall : public GameObject {
+#include <vector>
+
+class Enemy : public Player {
 public:
-    Wall(int h, int w);
+    Enemy(int w1, int h1);
     void update(int key_pressed, std::vector<special_cell>& general_special_cells) override;
     void check_death(std::vector<special_cell>& general_special_cells) override;
     void draw() override;
     std::string get_obj_name() override;
-
-private:
-    int screen_width;
-    int screen_height;
+    void update_special_cells();
+    
 };
 
-#endif // WALL_H
+#endif // ENEMY_H

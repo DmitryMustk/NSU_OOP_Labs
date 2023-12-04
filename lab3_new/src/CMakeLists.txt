@@ -14,6 +14,7 @@ add_executable(${exe_name} main.cpp
     game_objects/player.cpp
     game_objects/bomb.cpp
     game_objects/wall.cpp
+    game_objects/enemy.cpp
 )
 find_package(SFML 2.5 COMPONENTS system audio REQUIRED)
 
