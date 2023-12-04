@@ -4,6 +4,7 @@
 
 Enemy::Enemy(int h1, int w1) : Player(h1, w1){
      icon = "E";
+     last_time_walk = now();
 }
 
 void Enemy::draw(){
@@ -18,10 +19,14 @@ std::string Enemy::get_obj_name() {
 
 void Enemy::update(int key_pressed, std::vector<special_cell>& general_special_cells) {
     check_death(general_special_cells);
-    std::vector<int> dirs = {KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN, 0};
-    key_pressed = dirs[std::rand() % 5];
-    update_special_cells();
-    move_player(key_pressed, general_special_cells);    
+    std::vector<int> dirs = {KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN};
+    if((now() - last_time_walk) / 1ms > 500){
+        key_pressed = dirs[std::rand() % 4];
+        update_special_cells();
+        move_player(key_pressed, general_special_cells); 
+        last_time_walk = now();
+    }
+       
 }
 
 void Enemy::check_death(std::vector<special_cell>& general_special_cells) {

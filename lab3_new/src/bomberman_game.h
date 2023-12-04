@@ -26,7 +26,6 @@ private:
     void play_music(sf::Music& music);
     void update_objects(int key_pressed);
     void render_objects() ;
-    void render_title();
     void render_border() ;
     void lose();
     void start_screen();
@@ -38,9 +37,8 @@ private:
     int w1;
     std::shared_ptr<Player> player_object;
     size_t mult;
-
     GameLogger logger;
-    const char* title_format_str = "Bomberman Game. Bombs: %lu";
+    
     const int16_t main_color_pair = 1;
     const int16_t player_color_pair = 2;
     const int16_t bullet_color_pair = 3;

@@ -16,6 +16,7 @@ add_executable(${exe_name} main.cpp
     game_objects/wall.cpp
     game_objects/enemy.cpp
 )
+
 find_package(SFML 2.5 COMPONENTS system audio REQUIRED)
 
 target_link_libraries(${exe_name} curses sfml-system sfml-audio)

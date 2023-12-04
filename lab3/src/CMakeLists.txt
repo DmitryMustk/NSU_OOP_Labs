@@ -25,6 +25,8 @@ add_executable(${exe_name} main.cpp
         utils.h
         game_logger.cpp
         game_logger.h
+        wall.cpp
+        wall.h
 )
 find_package(SFML 2.5 COMPONENTS system audio REQUIRED)
 if(WIN32 OR MSVC)

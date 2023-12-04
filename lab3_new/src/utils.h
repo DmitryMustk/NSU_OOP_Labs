@@ -13,5 +13,4 @@ void out(int y, int x, const std::string& s);
 void show_message(std::vector<std::string>& message, int from, int to, int h1, int w1);
 
 steady_clock_t now();
-
 #endif  //GAME_UTILS_H

@@ -7,6 +7,7 @@
 #include "bomb.h"
 #include "game_logger.h"
 #include "player.h"
+#include "wall.h"
 
 class BombermanGame {
    private:
@@ -16,6 +17,7 @@ class BombermanGame {
     Player player;
 
     std::vector<Bomb> bombs;
+    std::vector<BreakableWall> breakable_walls;
 
     const char* title_format_str = "Bomberman Game. Bombs: %lu";
     const int16_t main_color_pair = 1;
@@ -37,6 +39,7 @@ class BombermanGame {
     void render_title();
     void render_bombs();
     void render_border() const;
+    void render_walls();
     void handle_input(int c);
 
     void run_game();

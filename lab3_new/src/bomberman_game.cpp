@@ -46,12 +46,6 @@ void BombermanGame::fill_map(){
     create_walls();  
 }
 
-void BombermanGame::render_title() {
-    ssize_t title_size = snprintf(NULL, 0, title_format_str, game_objects.size() - 1);
-    wmove(stdscr, 1, (w1 - title_size) / 2);
-    wprintw(stdscr, title_format_str, game_objects.size() - 1);
-}
-
 void BombermanGame::render_border() {
     for (int i = 1; i < w1; ++i) {
         out(0, i, "-");
@@ -76,7 +70,7 @@ void BombermanGame::lose(){
 }
 
 void BombermanGame::play_music(sf::Music& music) {
-    if (!music.openFromFile("../resources/output.wav")) {
+    if (!music.openFromFile("../resources/nc_output.wav")) {
         logger.log("Cannot open music file");
         return;
     }
@@ -114,7 +108,6 @@ void BombermanGame::run_game() {
             music.play();
         }
                
-        render_title();
         render_border();
         render_objects();
         update_special_cells();

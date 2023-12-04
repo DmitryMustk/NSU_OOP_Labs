@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/BomberMan.dir/main.cpp.o CMakeFiles/BomberMan.dir/bomb.cpp.o CMakeFiles/BomberMan.dir/player.cpp.o CMakeFiles/BomberMan.dir/bomberman_game.cpp.o CMakeFiles/BomberMan.dir/utils.cpp.o CMakeFiles/BomberMan.dir/game_logger.cpp.o -o BomberMan  -lcurses /usr/lib/x86_64-linux-gnu/libsfml-audio.so.2.5.1 /usr/lib/x86_64-linux-gnu/libsfml-system.so.2.5.1 

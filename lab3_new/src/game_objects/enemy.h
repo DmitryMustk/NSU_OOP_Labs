@@ -14,7 +14,8 @@ public:
     void draw() override;
     std::string get_obj_name() override;
     void update_special_cells();
-    
+private:
+    steady_clock_t last_time_walk;
 };
 
 #endif // ENEMY_H

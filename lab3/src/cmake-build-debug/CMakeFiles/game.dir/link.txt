@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/game.dir/main.cpp.o CMakeFiles/game.dir/bullet.cpp.o CMakeFiles/game.dir/player.cpp.o CMakeFiles/game.dir/bomberman_game.cpp.o CMakeFiles/game.dir/utils.cpp.o -o game  -lcurses 

@@ -56,6 +56,10 @@ void BombermanGame::render_bombs() {
     attroff(COLOR_PAIR(bullet_color_pair));
 }
 
+//void BombermanGame::render_walls() {
+//    for(int i = 0; i <)
+//}
+
 void BombermanGame::render_border() const {
     for (int i = 1; i < w1; ++i) {
         out(0, i, "-");
@@ -169,6 +173,6 @@ void BombermanGame::show_message(std::vector<std::string>& message, int from, in
             out(h1 / 2 + (i - from) - (to - from) / 2, (w1 - message[i].size()) / 2, message[i]);
         }
         refresh();
-        usleep(50000);
+        usleep(500000);
     }
 }

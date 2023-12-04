@@ -1,0 +1,3 @@
+/home/ddmstk/Project/NSU_OOP_Labs/lab3/src/cmake-build-debug/CMakeFiles/BomberMan.dir
+/home/ddmstk/Project/NSU_OOP_Labs/lab3/src/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/ddmstk/Project/NSU_OOP_Labs/lab3/src/cmake-build-debug/CMakeFiles/rebuild_cache.dir
