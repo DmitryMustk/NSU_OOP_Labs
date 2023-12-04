@@ -8,13 +8,18 @@
 #include <ctime>
 #include <unistd.h>
 
-BombermanGame::BombermanGame(){
+BombermanGame::BombermanGame() : logger("logs.txt"){
     initscr();
     cbreak();
     noecho();
     curs_set(FALSE);
     keypad(stdscr, TRUE);
     timeout(50);
+
+    if (has_colors() == FALSE) {
+        endwin();
+        throw std::runtime_error("Your terminal does not support colours.\n");
+    }
 
     start_color();
     init_pair(main_color_pair, COLOR_WHITE, COLOR_BLACK);
@@ -23,6 +28,7 @@ BombermanGame::BombermanGame(){
     init_pair(lose_screen_color_pair, COLOR_BLACK, COLOR_RED);
 
     mult = 1;
+    
     //get console dimensions
     getmaxyx(stdscr, h1, w1);
     fill_map();
@@ -69,15 +75,43 @@ void BombermanGame::lose(){
     out(h1 / 2 + 1, (w1 - messages.second.size()) / 2, messages.second);
 }
 
+void BombermanGame::play_music(sf::Music& music) {
+    if (!music.openFromFile("../resources/output.wav")) {
+        logger.log("Cannot open music file");
+        return;
+    }
+    music.play();
+}
+
+void BombermanGame::start_screen() {
+    std::ifstream input("../resources/start_screen.txt");
+    if (!input.is_open())
+        throw std::runtime_error("Can not open the start_screen file");
+    std::vector<std::string> message;
+    std::string line;
+    while (std::getline(input, line))
+        message.push_back(line);
+
+    show_message(message, 0, 8, h1, w1);
+    show_message(message, 10, 18, h1, w1);
+    show_message(message, 19, 26, h1, w1);
+}
+
 void BombermanGame::run_game() {
     int c;
-    
+    sf::Music music;
+    play_music(music);
+    start_screen();
     while ('q' != (c = getch())) {
         clear();
 
         if(player_object->is_dead){
             lose();
             continue;
+        }
+
+        if (music.getStatus() != sf::Music::Playing) {
+            music.play();
         }
                
         render_title();

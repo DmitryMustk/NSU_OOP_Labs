@@ -7,13 +7,14 @@
 #include <vector>
 
 class GameLogger{
-   public:
+public:
+    GameLogger();
     GameLogger(const std::string& log_file_name);
     ~GameLogger();
     void log(const std::string& message);
     void log(const std::string& message, int w, int h);
     void log(const std::string& message, std::vector<std::pair<int,int>> dmg_cords, std::pair<int, int> player_cords);
-   private:
+private:
     std::ofstream log_file;
     std::string log_file_name;
 };
