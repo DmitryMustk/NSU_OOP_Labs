@@ -1,7 +1,6 @@
 #include "flat_map.h"
 #include "gtest/gtest.h"
 
-
 namespace {
 
 TEST(FlatMapTest, insert_and_access) {
@@ -112,6 +111,38 @@ TEST(FlatMapTest, move_assigment_operator) {
 
 
     EXPECT_EQ(map1.size(), 0);
+}
+
+TEST(FlatMapIteratorTest, DereferenceOperator) {
+    FlatMap myMap;
+    myMap["one"] = "1";
+
+    FlatMap::FlatMapIterator it = myMap.begin();
+    EXPECT_EQ((*it).key, "one");
+    EXPECT_EQ((*it).value, "1");
+}
+
+TEST(FlatMapIteratorTest, ArrowOperator) {
+    FlatMap myMap;
+    myMap["one"] = "1";
+
+    FlatMap::FlatMapIterator it = myMap.begin();
+    EXPECT_EQ(it->key, "one");
+    EXPECT_EQ(it->value, "1");
+}
+
+TEST(FlatMapIteratorTest, EqualityOperator) {
+    FlatMap myMap;
+    myMap["one"] = "1";
+    myMap["two"] = "2";
+    myMap["three"] = "3";
+
+    FlatMap::FlatMapIterator it = myMap.begin();
+    FlatMap::FlatMapIterator it2 = myMap.begin();
+    EXPECT_TRUE(it == it2);
+
+    ++it;
+    EXPECT_TRUE(it != it2);
 }
 
 }  // namespace
