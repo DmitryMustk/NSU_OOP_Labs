@@ -127,3 +127,40 @@ void swap(FlatMap& first, FlatMap& second) noexcept{
     std::swap(first.size_, second.size_);
     std::swap(first.capacity_, second.capacity_);
 }
+
+FlatMap::FlatMapIterator FlatMap::begin(){
+    return FlatMapIterator(data_);
+}
+
+FlatMap::FlatMapIterator FlatMap::end(){
+    return FlatMapIterator(data_ + size_);
+}
+
+FlatMap::FlatMapIterator::FlatMapIterator(FlatMap::FlatMapIterator::pointer ptr) : ptr_(ptr){}
+
+FlatMap::FlatMapIterator& FlatMap::FlatMapIterator::operator++(){
+    ++ptr_;
+    return *this;
+}
+
+FlatMap::FlatMapIterator FlatMap::FlatMapIterator::operator++(int){
+    FlatMap::FlatMapIterator tmp = *this;
+    ++ptr_;
+    return tmp;
+}
+
+FlatMap::KeyValue& FlatMap::FlatMapIterator::operator*() const{
+    return *ptr_;
+}
+
+FlatMap::KeyValue* FlatMap::FlatMapIterator::operator->(){
+    return ptr_;
+}
+
+bool FlatMap::FlatMapIterator::operator==(const FlatMapIterator& other) const{
+    return ptr_ == other.ptr_;
+}
+
+bool FlatMap::FlatMapIterator::operator!=(const FlatMapIterator& other) const{
+    return ptr_ != other.ptr_;
+}
