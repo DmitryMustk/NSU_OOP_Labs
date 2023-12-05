@@ -1,0 +1,4 @@
+.clang-format
+.idea/
+.vscode/
+build.sh
